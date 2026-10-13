@@ -62,7 +62,7 @@ html[lang="pt-BR"] .en { display: none !important; }
 }
 #capa .miolo {
   max-width: 1120px; margin: 0 auto; padding: 56px 20px 40px;
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 32px 48px; align-items: end;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 520px); gap: 32px 48px; align-items: end;
 }
 #capa .eyebrow { font-family: var(--narrow); text-transform: uppercase; letter-spacing: .12em; font-size: 12.5px; color: var(--ink-2); margin: 0 0 14px; }
 #capa h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 4.2vw, 46px); line-height: 1.08; margin: 0 0 14px; letter-spacing: -.012em; text-wrap: balance; }

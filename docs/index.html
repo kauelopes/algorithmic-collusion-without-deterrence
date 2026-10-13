@@ -30,8 +30,8 @@
       <p class="venue">ICAIF '26, Milan, November 14–17, 2026 · <a href="https://doi.org/10.1145/3858063.3858865">doi:10.1145/3858063.3858865</a> · <a href="./paper.pdf">PDF</a> · <a href="https://github.com/kauelopes/algorithmic-collusion-without-deterrence"><span class="en">code and data</span><span class="pt">código e dados</span></a></p>
     </div>
     <figure>
-      <img src="./figures/fig_policy_heatmap.png" alt="Policy heatmaps of representative trained agents: the greedy price as a function of the 15 by 15 state of last prices" />
-      <figcaption><span class="en">The object under study. Each panel is one trained agent's policy: its chosen price for every one of the 225 states (own last price × rival's last price). Away from the path the pair actually travels, there is no structure to read.</span><span class="pt">O objeto em estudo. Cada painel é a política de um agente treinado: o preço escolhido em cada um dos 225 estados (último preço próprio × último preço do rival). Fora do caminho que o par de fato percorre, não há estrutura a ler.</span></figcaption>
+      <img src="./figures/fig_attractor_heatmap_cross.png" alt="Two heatmaps over the 15 by 15 price grid: with the training partner, attractor mass sits on the diagonal between 1.70 and 1.90; with a stranger, it falls to the competitive corner" />
+      <figcaption><span class="en">The result in one picture. Where 1,024 pairs of frozen pricing policies end up: with the partner they trained with (left), on a ridge of high prices along the diagonal; with a stranger trained the same way (right), in the competitive corner. Same policies, same colour scale.</span><span class="pt">O resultado numa imagem. Onde 1.024 pares de políticas de preço congeladas vão parar: com o parceiro com quem treinaram (esquerda), numa crista de preços altos ao longo da diagonal; com um estranho treinado do mesmo jeito (direita), no canto competitivo. Mesmas políticas, mesma escala de cor.</span></figcaption>
     </figure>
   </div>
 </header>
@@ -225,6 +225,10 @@
           <p class="pt">Duas regras construídas à mão na mesma matriz 225 × 15, uma que pune e perdoa e outra que pune para sempre, produzem a dinâmica certa por construção. A capacidade existe; o aprendizado não a usou.</p>
         </div></li>
       </ol>
+      <figure class="painel">
+        <div class="quadro"><img src="./figures/fig_policy_heatmap.png" alt="Policy heatmaps of a trained pair: the greedy price as a function of the 15 by 15 state of last prices" loading="lazy" /></div>
+        <figcaption><b><span class="en">The object under audit (iii).</span><span class="pt">O objeto da auditoria (iii).</span></b> <span class="en">Each panel is one trained agent's policy: its chosen price for every one of the 225 states. Away from the path the pair travels, there is no structure to read.</span><span class="pt">Cada painel é a política de um agente treinado: o preço escolhido em cada um dos 225 estados. Fora do caminho que o par percorre, não há estrutura a ler.</span></figcaption>
+      </figure>
       <div class="duas">
         <figure class="painel">
           <div class="quadro"><img src="./figures/fig_grim_vs_nash.png" alt="Price paths against grim-trigger, constant-Nash and constant-monopoly opponents from a cooperative start" loading="lazy" /></div>
