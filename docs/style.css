@@ -18,6 +18,13 @@
   --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
   --toc-w: 200px;
   --margin-w: 250px;
+  /* The reading block: a 60ch text column (60ch of the body serif at 17px), the gap, and
+     the margin notes. Fixed in px so that tables, code and figures resolve to the same
+     width as the paragraphs (ch is relative to each element's own font). */
+  --texto-w: 525px;
+  --gap-w: 36px;
+  --leitura-w: calc(var(--texto-w) + var(--gap-w) + var(--margin-w));
+  --coluna-w: 40px;
 }
 
 * { box-sizing: border-box; }
@@ -60,23 +67,36 @@ html[lang="pt-BR"] .en { display: none !important; }
   background-size: 28px 28px;
   background-position: -1px -1px;
 }
-#capa .miolo {
-  max-width: 1120px; margin: 0 auto; padding: 56px 20px 36px;
-  display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px;
+/* ---------- o eixo: capa, corpo e rodapé na mesma grade ---------- */
+/* Three columns: a flexible left margin that holds the table of contents, the reading
+   block, and a flexible right margin. The reading block is therefore centred on the
+   page, and the cover, the article and the footer share its left and right edges. */
+#capa .miolo, #corpo, footer .miolo {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) var(--leitura-w) minmax(0, 1fr);
+  column-gap: var(--coluna-w);
+  margin: 0 auto; padding-left: 20px; padding-right: 20px;
 }
+#capa .miolo > *, article, footer .miolo > * { grid-column: 2; min-width: 0; }
+
+#capa .miolo { padding-top: 56px; padding-bottom: 36px; row-gap: 32px; }
+#capa .miolo > div { text-align: center; }
 #capa .eyebrow { font-family: var(--narrow); text-transform: uppercase; letter-spacing: .12em; font-size: 12.5px; color: var(--ink-2); margin: 0 0 14px; }
 #capa h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 4.2vw, 46px); line-height: 1.08; margin: 0 0 14px; letter-spacing: -.012em; text-wrap: balance; }
-#capa .sub { font-size: 20px; line-height: 1.4; color: var(--ink-2); margin: 0 0 22px; max-width: 34em; font-style: italic; }
+#capa .sub { font-size: 20px; line-height: 1.4; color: var(--ink-2); margin: 0 auto 22px; max-width: 34em; font-style: italic; }
 #capa .autores { font-family: var(--narrow); font-size: 15px; color: var(--ink); margin: 0 0 4px; }
 #capa .venue { font-family: var(--narrow); font-size: 14px; color: var(--ink-2); margin: 0; }
 #capa .venue a { color: var(--accent-ink); }
 #capa figure { margin: 0; background: var(--paper); border: 1px solid var(--rule); padding: 6px; }
 #capa figure img { display: block; width: 100%; height: auto; }
-#capa figcaption { font-family: var(--narrow); font-size: 13px; color: var(--ink-2); margin: 8px 6px 2px; line-height: 1.4; max-width: 90ch; }
+#capa figcaption { font-family: var(--narrow); font-size: 13px; color: var(--ink-2); margin: 8px 6px 2px; line-height: 1.4; }
 
 /* ---------- corpo: sumário + artigo ---------- */
-#corpo { max-width: 1120px; margin: 0 auto; padding: 0 20px 80px; display: grid; grid-template-columns: var(--toc-w) minmax(0, 1fr); gap: 0 40px; }
-#sumario { position: sticky; top: 56px; align-self: start; padding-top: 36px; font-family: var(--narrow); font-size: 13.5px; }
+#corpo { padding-bottom: 80px; }
+#sumario {
+  grid-column: 1; justify-self: end; width: min(100%, var(--toc-w));
+  position: sticky; top: 56px; align-self: start; padding-top: 36px; font-family: var(--narrow); font-size: 13.5px;
+}
 #sumario .rotulo { text-transform: uppercase; letter-spacing: .12em; font-size: 11px; color: var(--mute); margin: 0 0 10px; }
 #sumario ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); }
 #sumario li a {
@@ -89,10 +109,10 @@ html[lang="pt-BR"] .en { display: none !important; }
 
 article { padding-top: 36px; }
 article section { margin-bottom: 56px; }
-.linha { display: grid; grid-template-columns: minmax(0, 60ch) var(--margin-w); gap: 0 36px; align-items: start; }
+.linha { display: grid; grid-template-columns: minmax(0, var(--texto-w)) var(--margin-w); gap: 0 var(--gap-w); align-items: start; }
 .linha > :first-child { grid-column: 1; min-width: 0; }
 .linha > aside { grid-column: 2; }
-.larga { max-width: calc(60ch + 36px + var(--margin-w)); }
+.larga { max-width: var(--leitura-w); }
 
 h2 {
   font-family: var(--serif); font-weight: 600; font-size: 28px; line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em; text-wrap: balance;
@@ -100,7 +120,7 @@ h2 {
 h2 .n { font-family: var(--mono); font-weight: 400; font-size: 14px; color: var(--mute); display: block; margin-bottom: 6px; letter-spacing: .04em; }
 .pergunta { font-style: italic; color: var(--accent-ink); font-size: 19px; margin: 0 0 18px; line-height: 1.4; }
 p { margin: 0 0 14px; }
-p.en, p.pt { max-width: 60ch; }
+p.en, p.pt { max-width: var(--texto-w); }
 em { font-style: italic; }
 strong { font-weight: 600; }
 
@@ -114,18 +134,18 @@ aside.nota .fig { color: var(--mute); display: block; margin-top: 4px; font-size
 aside.nota code { font-size: 11.5px; }
 
 /* figuras e diagramas */
-figure.painel { margin: 10px 0 22px; max-width: calc(60ch + 36px + var(--margin-w)); }
+figure.painel { margin: 10px 0 22px; max-width: var(--leitura-w); }
 figure.painel .quadro { background: #fff; border: 1px solid var(--rule); padding: 10px; }
 figure.painel svg { display: block; width: 100%; height: auto; }
 figure.painel img { display: block; width: 100%; height: auto; }
-figure.painel figcaption { font-family: var(--narrow); font-size: 13px; color: var(--ink-2); margin-top: 8px; line-height: 1.4; max-width: 80ch; }
+figure.painel figcaption { font-family: var(--narrow); font-size: 13px; color: var(--ink-2); margin-top: 8px; line-height: 1.4; }
 figure.painel figcaption b { font-weight: 600; color: var(--ink); }
 .rolagem { overflow-x: auto; }
-.duas { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; max-width: calc(60ch + 36px + var(--margin-w)); margin: 10px 0 22px; }
+.duas { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; max-width: var(--leitura-w); margin: 10px 0 22px; }
 .duas figure.painel { margin: 0; min-width: 0; }
 
 /* auditorias como lista numerada do paper */
-ol.auditorias { list-style: none; margin: 8px 0 20px; padding: 0; max-width: calc(60ch + 36px + var(--margin-w)); }
+ol.auditorias { list-style: none; margin: 8px 0 20px; padding: 0; max-width: var(--leitura-w); }
 ol.auditorias li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 0 16px; padding: 14px 0; border-top: 1px solid var(--rule); }
 ol.auditorias li:last-child { border-bottom: 1px solid var(--rule); }
 ol.auditorias .tag { font-family: var(--mono); font-size: 13px; color: var(--accent-ink); padding-top: 3px; }
@@ -134,7 +154,7 @@ ol.auditorias p { margin: 0; font-size: 15.5px; color: var(--ink-2); max-width: 
 ol.auditorias .num { font-family: var(--mono); font-size: 13px; color: var(--ink); white-space: nowrap; }
 
 /* demonstração interativa */
-#demo { display: grid; grid-template-columns: minmax(280px, 420px) minmax(0, 1fr); gap: 20px 28px; align-items: start; max-width: calc(60ch + 36px + var(--margin-w)); margin: 10px 0 22px; }
+#demo { display: grid; grid-template-columns: minmax(280px, 420px) minmax(0, 1fr); gap: 20px 28px; align-items: start; max-width: var(--leitura-w); margin: 10px 0 22px; }
 #demo .quadro { background: #fff; border: 1px solid var(--rule); padding: 10px; }
 #demo svg { display: block; width: 100%; height: auto; }
 #demo .cel { fill: #fff; stroke: var(--rule); stroke-width: .6; cursor: pointer; }
@@ -160,13 +180,14 @@ ol.auditorias .num { font-family: var(--mono); font-size: 13px; color: var(--ink
 #demo .legenda i { display: inline-block; width: 10px; height: 10px; vertical-align: -1px; margin-right: 4px; border: 1px solid var(--rule); }
 
 /* tabelas, código */
-table { border-collapse: collapse; width: 100%; font-family: var(--narrow); font-size: 14px; max-width: calc(60ch + 36px + var(--margin-w)); margin: 8px 0 18px; }
+table { border-collapse: collapse; width: 100%; font-family: var(--narrow); font-size: 14px; max-width: var(--leitura-w); margin: 8px 0 18px; }
 th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
 th { font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); font-weight: 600; }
 td code, p code { font-family: var(--mono); font-size: 12.5px; }
+td code { overflow-wrap: anywhere; }
 td.num { font-family: var(--mono); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums lining-nums; }
-pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 10px 12px; overflow-x: auto; max-width: calc(60ch + 36px + var(--margin-w)); margin: 8px 0 18px; }
-.caixa-nao { border-left: 3px solid var(--ink); padding: 2px 0 2px 16px; margin: 18px 0; max-width: 60ch; }
+pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.5; background: var(--paper-2); border: 1px solid var(--rule); padding: 10px 12px; overflow-x: auto; max-width: var(--leitura-w); margin: 8px 0 18px; }
+.caixa-nao { border-left: 3px solid var(--ink); padding: 2px 0 2px 16px; margin: 18px 0; max-width: var(--texto-w); }
 .caixa-nao p { margin: 0 0 8px; }
 .caixa-nao .rotulo { font-family: var(--narrow); text-transform: uppercase; letter-spacing: .1em; font-size: 11.5px; color: var(--mute); display: block; margin-bottom: 4px; }
 
@@ -177,19 +198,24 @@ pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.5; background:
 .branco { fill: #fff; }
 
 footer { border-top: 1px solid var(--rule); font-family: var(--narrow); font-size: 13px; color: var(--mute); }
-footer .miolo { max-width: 1120px; margin: 0 auto; padding: 18px 20px 40px; }
+footer .miolo { padding-top: 18px; padding-bottom: 40px; }
 
 /* ---------- responsivo ---------- */
-@media (max-width: 1000px) {
-  #corpo { grid-template-columns: minmax(0, 1fr); }
-  #sumario { position: static; padding-top: 24px; }
+/* Below 1100px the left margin cannot hold the table of contents next to the reading
+   block, so everything becomes one column: contents on top, margin notes under their
+   paragraph. */
+@media (max-width: 1100px) {
+  #capa .miolo, #corpo, footer .miolo { grid-template-columns: minmax(0, 1fr); max-width: calc(var(--leitura-w) + 40px); }
+  #capa .miolo > *, article, footer .miolo > *, #sumario { grid-column: 1; }
+  #sumario { position: static; justify-self: start; width: auto; padding-top: 24px; }
   #sumario ol { display: flex; flex-wrap: wrap; gap: 2px 12px; border-left: 0; }
   #sumario li a { border-left: 0; padding: 4px 0; }
   #sumario li a.ativa { border-left: 0; text-decoration: underline; }
   #sumario .rodape { display: none; }
   .linha { grid-template-columns: minmax(0, 1fr); }
-  .linha > aside { grid-column: 1; margin: -4px 0 16px; }
-  aside.nota { border-top: 0; border-left: 2px solid var(--rule); padding: 0 0 0 10px; }
+  .linha > aside { grid-column: 1; margin: 0 0 18px; }
+  /* same treatment as in the margin (hairline above, number first), not a quotation */
+  aside.nota { max-width: var(--texto-w); padding-top: 6px; }
   #capa .miolo { padding-top: 36px; }
   #demo { grid-template-columns: minmax(0, 1fr); }
 }

@@ -43,7 +43,7 @@
     try { localStorage.setItem("lang", l); } catch (e) {}
     if (demo.ready) demo.relabel();
   }
-  var fromHash = /(^|-)pt$/.test(location.hash) ? "pt-BR" : (/(^|-)en$/.test(location.hash) ? "en" : null);
+  var fromHash = /(^#|-)pt$/.test(location.hash) ? "pt-BR" : (/(^#|-)en$/.test(location.hash) ? "en" : null);
   var saved = null; try { saved = localStorage.getItem("lang"); } catch (e) {}
   setLang(fromHash || (saved === "pt-BR" ? "pt-BR" : "en"));
   document.querySelectorAll("#barra .idioma button").forEach(function (b) {
