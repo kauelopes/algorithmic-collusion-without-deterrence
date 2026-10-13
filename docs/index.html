@@ -4,283 +4,373 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Algorithmic Collusion Without Deterrence</title>
-  <meta name="description" content="Companion site for the ICAIF '26 paper: auditing the punishment mechanism in Q-learning pricing agents." />
+  <meta name="description" content="Companion site for the ICAIF '26 paper: auditing the punishment mechanism in Q-learning pricing agents, with an interactive map of a converged pair." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,600&family=Archivo+Narrow:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <header id="topo">
-    <div id="marca">
-      <h1>Collusion Without Deterrence</h1>
-      <span class="sub"><span class="en">ICAIF '26 · companion site</span><span class="pt">ICAIF '26 · site do artigo</span></span>
+
+<div id="barra">
+  <div class="marca">Collusion Without Deterrence <span><span class="en">ICAIF '26 · companion</span><span class="pt">ICAIF '26 · site do artigo</span></span></div>
+  <div class="idioma" role="group" aria-label="Language">
+    <button type="button" data-lang="en" class="ativa">EN</button>
+    <button type="button" data-lang="pt-BR">PT</button>
+  </div>
+</div>
+
+<header id="capa">
+  <div class="miolo">
+    <div>
+      <p class="eyebrow"><span class="en">Companion site · 7th ACM International Conference on AI in Finance</span><span class="pt">Site do artigo · 7th ACM International Conference on AI in Finance</span></p>
+      <h1>Algorithmic Collusion Without Deterrence</h1>
+      <p class="sub"><span class="en">Auditing the punishment mechanism in Q-learning pricing agents. The high prices are real; the retaliation read into them is not where the literature looked for it.</span><span class="pt">Uma auditoria do mecanismo de punição em agentes de preço com Q-learning. Os preços altos são reais; a retaliação lida neles não está onde a literatura procurou.</span></p>
+      <p class="autores">Kauê Lopes de Moraes · Rodrigo De Losso <span class="en">· University of São Paulo</span><span class="pt">· Universidade de São Paulo</span></p>
+      <p class="venue">ICAIF '26, Milan, November 14–17, 2026 · <a href="https://doi.org/10.1145/3858063.3858865">doi:10.1145/3858063.3858865</a> · <a href="./paper.pdf">PDF</a> · <a href="https://github.com/kauelopes/algorithmic-collusion-without-deterrence"><span class="en">code and data</span><span class="pt">código e dados</span></a></p>
     </div>
-    <nav id="abas" aria-label="Sections">
-      <button data-aba="visao" class="ativa"><span class="en">Overview</span><span class="pt">Visão geral</span></button>
-      <button data-aba="metodo"><span class="en">Partner vs. stranger</span><span class="pt">Parceiro vs. estranho</span></button>
-      <button data-aba="auditorias"><span class="en">Five audits</span><span class="pt">Cinco auditorias</span></button>
-      <button data-aba="incentivos"><span class="en">Incentives</span><span class="pt">Incentivos</span></button>
-      <button data-aba="paper"><span class="en">Paper &amp; data</span><span class="pt">Artigo e dados</span></button>
-    </nav>
-    <div id="seletores">
-      <span class="rotulo"><span class="en">Language</span><span class="pt">Idioma</span></span>
-      <div class="segmentado" role="group" aria-label="Language">
-        <button type="button" data-lang="en" class="ativa">EN</button>
-        <button type="button" data-lang="pt-BR">PT</button>
+    <figure>
+      <img src="./figures/fig_policy_heatmap.png" alt="Policy heatmaps of representative trained agents: the greedy price as a function of the 15 by 15 state of last prices" />
+      <figcaption><span class="en">The object under study. Each panel is one trained agent's policy: its chosen price for every one of the 225 states (own last price × rival's last price). Away from the path the pair actually travels, there is no structure to read.</span><span class="pt">O objeto em estudo. Cada painel é a política de um agente treinado: o preço escolhido em cada um dos 225 estados (último preço próprio × último preço do rival). Fora do caminho que o par de fato percorre, não há estrutura a ler.</span></figcaption>
+    </figure>
+  </div>
+</header>
+
+<div id="corpo">
+  <nav id="sumario" aria-label="Contents">
+    <p class="rotulo"><span class="en">Contents</span><span class="pt">Sumário</span></p>
+    <ol>
+      <li><a href="#exibit"><span class="n">1</span><span class="en">The exhibit</span><span class="pt">O exibit</span></a></li>
+      <li><a href="#pergunta"><span class="n">2</span><span class="en">The question</span><span class="pt">A pergunta</span></a></li>
+      <li><a href="#estranho"><span class="n">3</span><span class="en">Partner vs. stranger</span><span class="pt">Parceiro vs. estranho</span></a></li>
+      <li><a href="#auditorias"><span class="n">4</span><span class="en">Five audits</span><span class="pt">Cinco auditorias</span></a></li>
+      <li><a href="#bacia"><span class="n">5</span><span class="en">The basin, live</span><span class="pt">A bacia, ao vivo</span></a></li>
+      <li><a href="#incentivos"><span class="n">6</span><span class="en">Incentives</span><span class="pt">Incentivos</span></a></li>
+      <li><a href="#implicacoes"><span class="n">7</span><span class="en">What changes</span><span class="pt">O que muda</span></a></li>
+      <li><a href="#dados"><span class="n">8</span><span class="en">Paper, code, data</span><span class="pt">Artigo, código, dados</span></a></li>
+    </ol>
+    <p class="rodape"><span class="en">Section numbers in the margin refer to the paper.</span><span class="pt">Os números de seção na margem referem-se ao artigo.</span></p>
+  </nav>
+
+  <article>
+
+    <!-- 1 ---------------------------------------------------------------- -->
+    <section id="exibit">
+      <h2><span class="n">1 · §1, §4.2</span><span class="en">The exhibit that made the result a landmark</span><span class="pt">O exibit que fez do resultado um marco</span></h2>
+      <p class="pergunta"><span class="en">Can two algorithms form a cartel without anyone telling them to?</span><span class="pt">Dois algoritmos podem formar um cartel sem ninguém mandar?</span></p>
+      <div class="linha">
+        <div>
+          <p class="en">In 2020, Calvano, Calzolari, Denicolò and Pastorello showed that two independent Q-learning algorithms, each setting a price in a simulated duopoly and seeing only yesterday's prices, converge to prices well above the competitive level. Q-learning is the most elementary form of reinforcement learning: a table that records, for each situation, how much each price earned, and gradually prefers what earned more.</p>
+          <p class="pt">Em 2020, Calvano, Calzolari, Denicolò e Pastorello mostraram que dois algoritmos de Q-learning independentes, cada um fixando um preço num duopólio simulado e vendo só os preços de ontem, convergem para preços bem acima do nível competitivo. O Q-learning é a forma mais elementar de aprendizado por reforço: uma tabela que anota, para cada situação, quanto cada preço rendeu, e vai preferindo o que rendeu mais.</p>
+        </div>
+        <aside class="nota"><span class="num">CI = 0.62 – 0.70</span><span class="en">collusion index within co-trained pairs, our replication (0 = competitive price, 1 = monopoly)</span><span class="pt">índice de colusão dentro dos pares treinados juntos, nossa replicação (0 = preço competitivo, 1 = monopólio)</span><span class="fig">§4.1</span></aside>
       </div>
-    </div>
-  </header>
-
-  <main>
-    <div id="palco">
-
-      <!-- ================= VISÃO GERAL ================= -->
-      <section class="aba ativa" data-aba="visao">
-        <div class="palco-titulo">
-          <h2><span class="en">When pricing algorithms "agree" without agreeing</span><span class="pt">Quando algoritmos de preço "combinam" sem combinar</span></h2>
-          <p class="pergunta"><span class="en">Is the drop-and-return pattern a punishment mechanism, or just a shape?</span><span class="pt">O padrão de queda e retorno é um mecanismo de punição, ou só um desenho?</span></p>
-          <p class="en">In 2020, Calvano, Calzolari, Denicolò and Pastorello showed that two independent Q-learning algorithms, pricing in a simulated duopoly without ever communicating, converge to prices well above the competitive level. Their central exhibit: force one algorithm to cut its price for one round and the rival cuts too, then both return to the high price. The pattern was read as a reward–punishment scheme, the signature of a cartel.</p>
-          <p class="pt">Em 2020, Calvano, Calzolari, Denicolò e Pastorello mostraram que dois algoritmos de Q-learning independentes, fixando preços num duopólio simulado sem nunca se comunicar, convergem para preços bem acima do nível competitivo. O "exibit" central: force um algoritmo a cortar o preço por uma rodada e o rival também corta, e depois os dois voltam ao preço alto. O padrão foi lido como um esquema de recompensa e punição, a assinatura de um cartel.</p>
-          <p class="en">We replicate the environment, confirm the pattern, and then audit the converged policies with learning switched off. None of five audits finds a punishment mechanism. What training produces instead is a basin of attraction specific to the pair, and the high prices survive because the profitable deviation is never tried, not because it would not pay.</p>
-          <p class="pt">Replicamos o ambiente, confirmamos o padrão e auditamos as políticas convergidas com o aprendizado desligado. Nenhuma das cinco auditorias encontra um mecanismo de punição. O que o treino produz é uma bacia de atração específica do par, e os preços altos sobrevivem porque o desvio lucrativo nunca é tentado, não porque não compensaria.</p>
+      <div class="linha">
+        <div>
+          <p class="en">Then the part that gave the result its policy weight. Force one algorithm to cut its price for a single round: the rival cuts too, and over the following rounds both climb back to the high price. The authors read the pattern as a reward–punishment scheme, the signature of a cartel that defends itself. We replicate it exactly: within co-trained pairs, 16 of 18 return to the pre-deviation price within about five rounds.</p>
+          <p class="pt">Depois, a parte que deu peso de política pública ao resultado. Force um algoritmo a cortar o preço por uma única rodada: o rival também corta, e nas rodadas seguintes os dois sobem de volta ao preço alto. Os autores leram o padrão como um esquema de recompensa e punição, a assinatura de um cartel que se defende. Nós o replicamos exatamente: dentro dos pares treinados juntos, 16 de 18 voltam ao preço anterior em cerca de cinco rodadas.</p>
         </div>
-
-        <div class="caixa">
-          <div class="titulo"><span class="en">The exhibit, redrawn</span><span class="pt">O exibit, redesenhado</span></div>
-          <div class="rolagem">
-          <svg viewBox="0 0 760 290" role="img" aria-label="Impulse-response sketch: forced cut, rival drops, both return">
-            <line x1="60" y1="30" x2="60" y2="240" stroke="var(--grade)"/>
-            <line x1="60" y1="240" x2="720" y2="240" stroke="var(--grade)"/>
-            <text x="18" y="72" class="tm"><tspan class="en">high</tspan><tspan class="pt">alto</tspan></text>
-            <text x="18" y="226" class="tm"><tspan class="en">low</tspan><tspan class="pt">baixo</tspan></text>
-            <text x="640" y="262" class="tm"><tspan class="en">rounds →</tspan><tspan class="pt">rodadas →</tspan></text>
-            <line x1="60" y1="70" x2="720" y2="70" stroke="var(--coop)" stroke-dasharray="4 4" opacity=".7"/>
-            <text x="66" y="62" class="tm"><tspan class="en">the "agreed" price</tspan><tspan class="pt">o preço "combinado"</tspan></text>
-            <rect x="300" y="30" width="40" height="210" fill="var(--desvio)" opacity=".10"/>
-            <text x="302" y="46" class="tm"><tspan class="en">forced cut</tspan><tspan class="pt">corte forçado</tspan></text>
-            <polyline points="60,70 300,70 320,210 340,210 380,160 420,110 460,80 500,70 720,70" fill="none" stroke="var(--desvio)" stroke-width="2.5"/>
-            <polyline points="60,72 300,72 340,72 360,190 400,140 440,95 480,76 520,72 720,72" fill="none" stroke="var(--primario)" stroke-width="2.5"/>
-            <text x="560" y="100" class="tl" style="fill:var(--desvio)"><tspan class="en">the firm that cut</tspan><tspan class="pt">a firma que cortou</tspan></text>
-            <text x="560" y="118" class="tl" style="fill:var(--primario)"><tspan class="en">the rival</tspan><tspan class="pt">a rival</tspan></text>
-            <text x="365" y="236" class="t"><tspan class="en">1. the rival drops</tspan><tspan class="pt">1. o rival cai</tspan></text>
-            <text x="470" y="52" class="t"><tspan class="en">2. both return</tspan><tspan class="pt">2. os dois voltam</tspan></text>
+        <aside class="nota"><span class="num">16 / 18</span><span class="en">pairs that return exactly to the pre-shock price after a forced one-round undercut</span><span class="pt">pares que voltam exatamente ao preço pré-choque após um corte forçado de uma rodada</span><span class="fig">§4.2 · Fig. 3 · <code>plot_impulse_ce_gap.py</code></span></aside>
+      </div>
+      <figure class="painel">
+        <div class="quadro rolagem">
+          <svg viewBox="0 0 760 270" role="img" aria-label="Impulse-response sketch: a forced cut, the rival's drop, and the return of both prices">
+            <line x1="56" y1="24" x2="56" y2="226" stroke="#dcd9d0"/>
+            <line x1="56" y1="226" x2="730" y2="226" stroke="#dcd9d0"/>
+            <text x="14" y="68" class="tm"><tspan class="en">high</tspan><tspan class="pt">alto</tspan></text>
+            <text x="14" y="214" class="tm"><tspan class="en">low</tspan><tspan class="pt">baixo</tspan></text>
+            <text x="652" y="248" class="tm"><tspan class="en">rounds →</tspan><tspan class="pt">rodadas →</tspan></text>
+            <line x1="56" y1="64" x2="730" y2="64" stroke="#7f7f7f" stroke-dasharray="4 4"/>
+            <text x="62" y="56" class="tm"><tspan class="en">pre-shock price</tspan><tspan class="pt">preço pré-choque</tspan></text>
+            <rect x="296" y="24" width="40" height="202" fill="#1f77b4" opacity=".08"/>
+            <text x="298" y="40" class="tm"><tspan class="en">forced cut</tspan><tspan class="pt">corte forçado</tspan></text>
+            <polyline points="56,64 296,64 316,200 336,200 376,152 416,104 456,74 496,64 730,64" fill="none" stroke="#7f7f7f" stroke-width="2.4"/>
+            <polyline points="56,66 296,66 336,66 356,182 396,134 436,90 476,70 516,66 730,66" fill="none" stroke="#1f77b4" stroke-width="2.4"/>
+            <text x="556" y="96" class="tl" style="fill:#7f7f7f"><tspan class="en">the firm that cut</tspan><tspan class="pt">a firma que cortou</tspan></text>
+            <text x="556" y="114" class="tl" style="fill:#1f77b4"><tspan class="en">the rival</tspan><tspan class="pt">a rival</tspan></text>
+            <text x="362" y="222" class="t"><tspan class="en">1. the rival drops</tspan><tspan class="pt">1. o rival cai</tspan></text>
+            <text x="466" y="46" class="t"><tspan class="en">2. both return</tspan><tspan class="pt">2. os dois voltam</tspan></text>
           </svg>
-          </div>
-          <div class="legenda en">The usual reading: the rival punishes the cut, and the punishment keeps the price high. Our question: is the response a punishment at all? Tabs above follow the paper's answer step by step.</div>
-          <div class="legenda pt">A leitura usual: o rival pune o corte, e a punição mantém o preço alto. Nossa pergunta: a resposta é mesmo uma punição? As abas acima seguem a resposta do artigo passo a passo.</div>
         </div>
+        <figcaption><b><span class="en">Sketch of the standard exhibit.</span><span class="pt">Esboço do exibit padrão.</span></b> <span class="en">The usual reading: the rival punishes the cut and the punishment keeps the price high. Our question: is the response a punishment at all?</span><span class="pt">A leitura usual: o rival pune o corte e a punição mantém o preço alto. A nossa pergunta: a resposta é mesmo uma punição?</span></figcaption>
+      </figure>
+      <figure class="painel">
+        <div class="quadro"><img src="./figures/fig_irf.png" alt="Measured impulse-response functions: downward and upward shocks, co-trained pair versus cross-paired control" loading="lazy" /></div>
+        <figcaption><b><span class="en">Figure 3 of the paper, measured.</span><span class="pt">Figura 3 do artigo, medida.</span></b> <span class="en">Rows: a downward shock and an upward shock. Columns: the co-trained pair and the cross-paired control. Within the pair, both shocks produce the drop-and-return; across pairs, the shock is invisible against the noise.</span><span class="pt">Linhas: um choque para baixo e um para cima. Colunas: o par treinado junto e o controle com pares cruzados. Dentro do par, os dois choques produzem a queda e o retorno; entre pares, o choque some no ruído.</span></figcaption>
+      </figure>
+    </section>
 
-        <div class="caixa">
-          <div class="titulo"><span class="en">Figure 3 of the paper: measured impulse responses</span><span class="pt">Figura 3 do artigo: respostas ao impulso medidas</span></div>
-          <img src="./figures/fig_irf.png" alt="Impulse-response functions: downward and upward shocks, co-trained pair versus cross-paired control" loading="lazy" />
-          <div class="legenda en">Rows: a downward shock (to the static best response) and an upward shock (to the monopoly price). Columns: the co-trained pair and the cross-paired control. Within the pair, both shocks produce the drop-and-return; across pairs, the shock is invisible against the noise.</div>
-          <div class="legenda pt">Linhas: choque para baixo (à melhor resposta estática) e para cima (ao preço de monopólio). Colunas: o par treinado junto e o controle com pares cruzados. Dentro do par, os dois choques produzem a queda e o retorno; entre pares, o choque some no ruído.</div>
+    <!-- 2 ---------------------------------------------------------------- -->
+    <section id="pergunta">
+      <h2><span class="n">2 · §2, §3.1</span><span class="en">Mechanism or shape?</span><span class="pt">Mecanismo ou desenho?</span></h2>
+      <p class="pergunta"><span class="en">A cartel is a rule: deviate and I punish you, and the punishment costs more than the deviation earns.</span><span class="pt">Um cartel é uma regra: desvie e eu te punirei, e a punição custa mais do que o desvio rende.</span></p>
+      <div class="linha">
+        <div>
+          <p class="en">In repeated-game theory the phrase "reward–punishment scheme" has a precise content. The scheme prescribes a path and responds to departures from it, in order to make deviating unprofitable; and the threat is credible because carrying it out is optimal. Three properties follow, each testable on a frozen policy: the response reacts to deviations rather than to anything whatsoever, it tracks the opponent rather than its own habit, and it actually makes deviation unprofitable.</p>
+          <p class="pt">Na teoria dos jogos repetidos, a expressão "esquema de recompensa e punição" tem conteúdo preciso. O esquema prescreve um caminho e responde a saídas dele, para tornar o desvio não lucrativo; e a ameaça é crível porque executá-la é ótimo. Seguem três propriedades, cada uma testável numa política congelada: a resposta reage a desvios e não a qualquer coisa, acompanha o oponente e não o próprio hábito, e de fato torna o desvio não lucrativo.</p>
         </div>
-      </section>
+        <aside class="nota"><span class="en">Friedman (1971), Abreu (1988), Green and Porter (1984) for the theory; Calvano et al. (2020, 2023) for the exhibit and its reading.</span><span class="pt">Friedman (1971), Abreu (1988), Green e Porter (1984) para a teoria; Calvano et al. (2020, 2023) para o exibit e sua leitura.</span><span class="fig">§2</span></aside>
+      </div>
+      <div class="linha">
+        <div>
+          <p class="en">Everything in the paper rests on one separation. Training is the process that generates the objects of study; it is not the object. At convergence we freeze the tables and play becomes greedy. Every number we report is collected in that test stage, with learning off, the way a finished product is inspected rather than a product that keeps adjusting during the inspection.</p>
+          <p class="pt">Tudo no artigo repousa numa separação. O treino é o processo que gera os objetos de estudo; não é o objeto. Na convergência, congelamos as tabelas e o jogo vira guloso. Todo número que reportamos é coletado nesse estágio de teste, com o aprendizado desligado, como se inspeciona um produto acabado, e não um produto que continua se ajustando durante a inspeção.</p>
+        </div>
+        <aside class="nota"><span class="num">24 + 1 + 5</span><span class="en">co-trained pairs at 2M steps, one 10M-step reference pair, five pairs under Calvano's own stopping rule</span><span class="pt">pares treinados juntos a 2M passos, um par de referência a 10M, cinco pares sob a regra de parada de Calvano</span><span class="fig">§3.2</span></aside>
+      </div>
+    </section>
 
-      <!-- ================= MÉTODO ================= -->
-      <section class="aba" data-aba="metodo">
-        <div class="palco-titulo">
-          <h2><span class="en">Partner versus stranger</span><span class="pt">Parceiro versus estranho</span></h2>
-          <p class="pergunta"><span class="en">What does the algorithm carry with it, and what exists only inside the pair?</span><span class="pt">O que o algoritmo carrega consigo, e o que só existe dentro do par?</span></p>
-          <p class="en">Laboratory economics distinguishes the <em>partner</em> design, where you always play with the same person, from the <em>stranger</em> design, where your partner is swapped. What survives the swap is a norm of your own; what disappears was an arrangement of that pair. All evidence on algorithmic collusion had been collected in the partner design: the pair that learned together is the pair that gets evaluated.</p>
+    <!-- 3 ---------------------------------------------------------------- -->
+    <section id="estranho">
+      <h2><span class="n">3 · §3.1, §4.4</span><span class="en">Partner versus stranger</span><span class="pt">Parceiro versus estranho</span></h2>
+      <p class="pergunta"><span class="en">What does the algorithm carry with it, and what exists only inside the pair?</span><span class="pt">O que o algoritmo carrega consigo, e o que só existe dentro do par?</span></p>
+      <div class="linha">
+        <div>
+          <p class="en">Laboratory economics distinguishes the <em>partner</em> design, where you always play with the same person, from the <em>stranger</em> design, where your partner is swapped. What survives the swap is a norm of your own; what disappears was an arrangement of that pair. All the evidence on algorithmic collusion had been collected in the partner design: the pair that learned together is the pair that is evaluated.</p>
           <p class="pt">A economia experimental distingue o desenho <em>partner</em>, em que você joga sempre com a mesma pessoa, do desenho <em>stranger</em>, em que o seu par é trocado. O que sobrevive à troca é uma norma sua; o que desaparece era um acordo daquele par. Toda a evidência sobre colusão algorítmica tinha sido coletada no desenho partner: o par que aprendeu junto é o par avaliado.</p>
-          <p class="en">Calvano et al. did rematch converged agents, with learning still on, and saw coordination collapse and then rebuild over tens of thousands of further rounds. We turn that exercise into a test: freeze the policies, pair an agent from run A with an agent from run B, and measure what the policy carries before any re-learning.</p>
-          <p class="pt">Calvano et al. chegaram a rematchar agentes convergidos, com o aprendizado ligado, e viram a coordenação colapsar e se reconstruir ao longo de dezenas de milhares de rodadas. Nós transformamos esse exercício num teste: congelar as políticas, parear um agente da simulação A com um da simulação B, e medir o que a política carrega antes de qualquer re-aprendizado.</p>
         </div>
+        <aside class="nota"><span class="en">Andreoni (1988) on partner and stranger designs; Lanctot et al. (2017) on joint policy correlation in multi-agent learning.</span><span class="pt">Andreoni (1988) sobre os desenhos partner e stranger; Lanctot et al. (2017) sobre correlação de política conjunta em aprendizado multiagente.</span></aside>
+      </div>
+      <div class="linha">
+        <div>
+          <p class="en">Calvano et al. did rematch converged agents, with learning still on, and saw profit gains fall from 85% to about 20% before re-learning partially restored them over tens of thousands of rounds. We turn that exercise into a test: freeze the policies, pair an agent from run A with an agent from run B, identical in everything except the random seed, and measure what the policy carries before any re-learning. Nothing carries. The collusion index falls from 0.674 to 0.126.</p>
+          <p class="pt">Calvano et al. chegaram a rematchar agentes convergidos, com o aprendizado ligado, e viram o ganho de lucro cair de 85% para cerca de 20% antes de o re-aprendizado o restaurar em parte, ao longo de dezenas de milhares de rodadas. Nós transformamos esse exercício num teste: congelar as políticas, parear um agente da simulação A com um da simulação B, idênticas em tudo menos na semente aleatória, e medir o que a política carrega antes de qualquer re-aprendizado. Nada é carregado. O índice de colusão cai de 0,674 para 0,126.</p>
+        </div>
+        <aside class="nota"><span class="num">0.674 → 0.126</span><span class="en">collusion index, within-pair to cross-pair, 12 matchings (−81%). In 40 matchings, 30% price below the competitive level.</span><span class="pt">índice de colusão, dentro do par para pares cruzados, 12 pareamentos (−81%). Em 40 pareamentos, 30% cobram abaixo do nível competitivo.</span><span class="fig">§4.4 · Fig. 7 · <code>plot_cross_deploy_analysis.py</code></span></aside>
+      </div>
+      <figure class="painel">
+        <div class="quadro rolagem">
+          <svg viewBox="0 0 760 310" role="img" aria-label="Partner design: the pair that trained together is evaluated together. Stranger design: an agent from run A plays an agent from run B with learning off.">
+            <text x="30" y="26" class="tl"><tspan class="en">The usual test (partner)</tspan><tspan class="pt">O teste de sempre (partner)</tspan></text>
+            <rect x="30" y="38" width="310" height="96" fill="#f3f1ea" stroke="#dcd9d0"/>
+            <text x="44" y="60" class="tm"><tspan class="en">training: run A</tspan><tspan class="pt">treino: simulação A</tspan></text>
+            <circle cx="100" cy="98" r="19" fill="#1f77b4"/><text x="94" y="103" class="t branco">A1</text>
+            <circle cx="190" cy="98" r="19" fill="#1f77b4"/><text x="184" y="103" class="t branco">A2</text>
+            <line x1="119" y1="98" x2="171" y2="98" stroke="#1f77b4" stroke-width="2"/>
+            <text x="222" y="103" class="t"><tspan class="en">learn together</tspan><tspan class="pt">aprendem juntos</tspan></text>
+            <line x1="185" y1="140" x2="185" y2="176" stroke="#86888b" stroke-width="1.5"/>
+            <rect x="30" y="180" width="310" height="90" fill="#fff" stroke="#1f77b4" stroke-width="1.5"/>
+            <text x="44" y="202" class="tm"><tspan class="en">test: the same pair</tspan><tspan class="pt">teste: o mesmo par</tspan></text>
+            <circle cx="100" cy="238" r="19" fill="#1f77b4"/><text x="94" y="243" class="t branco">A1</text>
+            <circle cx="190" cy="238" r="19" fill="#1f77b4"/><text x="184" y="243" class="t branco">A2</text>
+            <text x="222" y="234" class="t"><tspan class="en">high price</tspan><tspan class="pt">preço alto</tspan></text>
+            <text x="222" y="252" class="t">CI = 0.674</text>
 
-        <div class="caixa">
-          <div class="titulo"><span class="en">The two designs</span><span class="pt">Os dois desenhos</span></div>
-          <div class="rolagem">
-          <svg viewBox="0 0 760 330" role="img" aria-label="Partner design: the pair that trained together is evaluated together. Stranger design: an agent from run A plays an agent from run B with learning off.">
-            <text x="40" y="30" class="tl"><tspan class="en">The usual test (partner)</tspan><tspan class="pt">O teste de sempre (partner)</tspan></text>
-            <rect x="40" y="44" width="300" height="100" rx="8" fill="var(--pagina)" stroke="var(--grade)"/>
-            <text x="56" y="68" class="tm"><tspan class="en">training: run A</tspan><tspan class="pt">treino: simulação A</tspan></text>
-            <circle cx="110" cy="106" r="20" fill="var(--primario)"/><text x="104" y="111" class="t branco">A1</text>
-            <circle cx="200" cy="106" r="20" fill="var(--primario)"/><text x="194" y="111" class="t branco">A2</text>
-            <path d="M130 106 L180 106" stroke="var(--primario)" stroke-width="2"/>
-            <text x="235" y="112" class="t"><tspan class="en">learn together</tspan><tspan class="pt">aprendem juntos</tspan></text>
-            <path d="M190 154 L190 194" stroke="var(--tinta-muda)" stroke-width="2"/>
-            <rect x="40" y="199" width="300" height="90" rx="8" fill="var(--superficie)" stroke="var(--primario)" stroke-width="2"/>
-            <text x="56" y="222" class="tm"><tspan class="en">test: the same pair</tspan><tspan class="pt">teste: o mesmo par</tspan></text>
-            <circle cx="110" cy="256" r="20" fill="var(--primario)"/><text x="104" y="261" class="t branco">A1</text>
-            <circle cx="200" cy="256" r="20" fill="var(--primario)"/><text x="194" y="261" class="t branco">A2</text>
-            <text x="235" y="252" class="t"><tspan class="en">high price</tspan><tspan class="pt">preço alto</tspan></text>
-            <text x="235" y="270" class="t" style="fill:var(--coop)">CI = 0.67</text>
-
-            <text x="420" y="30" class="tl"><tspan class="en">Our test (stranger)</tspan><tspan class="pt">O nosso teste (stranger)</tspan></text>
-            <rect x="420" y="44" width="140" height="100" rx="8" fill="var(--pagina)" stroke="var(--grade)"/>
-            <text x="432" y="68" class="tm"><tspan class="en">run A</tspan><tspan class="pt">simulação A</tspan></text>
-            <circle cx="460" cy="106" r="18" fill="var(--primario)"/><text x="454" y="111" class="t branco">A1</text>
-            <circle cx="520" cy="106" r="18" fill="var(--primario)" opacity=".3"/><text x="514" y="111" class="t branco">A2</text>
-            <rect x="580" y="44" width="140" height="100" rx="8" fill="var(--pagina)" stroke="var(--grade)"/>
-            <text x="592" y="68" class="tm"><tspan class="en">run B</tspan><tspan class="pt">simulação B</tspan></text>
-            <circle cx="620" cy="106" r="18" fill="var(--desvio)" opacity=".3"/><text x="614" y="111" class="t branco">B1</text>
-            <circle cx="680" cy="106" r="18" fill="var(--desvio)"/><text x="674" y="111" class="t branco">B2</text>
-            <path d="M460 126 L520 194" stroke="var(--tinta-muda)" stroke-width="2"/>
-            <path d="M680 126 L620 194" stroke="var(--tinta-muda)" stroke-width="2"/>
-            <rect x="420" y="199" width="300" height="90" rx="8" fill="var(--superficie)" stroke="var(--desvio)" stroke-width="2"/>
-            <text x="436" y="222" class="tm"><tspan class="en">test: strangers, learning off</tspan><tspan class="pt">teste: estranhos, aprendizado desligado</tspan></text>
-            <circle cx="500" cy="256" r="20" fill="var(--primario)"/><text x="494" y="261" class="t branco">A1</text>
-            <circle cx="640" cy="256" r="20" fill="var(--desvio)"/><text x="634" y="261" class="t branco">B2</text>
-            <text x="540" y="252" class="t"><tspan class="en">price falls</tspan><tspan class="pt">o preço cai</tspan></text>
-            <text x="540" y="270" class="t" style="fill:var(--desvio)">CI = 0.13</text>
+            <text x="410" y="26" class="tl"><tspan class="en">Our test (stranger)</tspan><tspan class="pt">O nosso teste (stranger)</tspan></text>
+            <rect x="410" y="38" width="150" height="96" fill="#f3f1ea" stroke="#dcd9d0"/>
+            <text x="424" y="60" class="tm"><tspan class="en">run A</tspan><tspan class="pt">simulação A</tspan></text>
+            <circle cx="452" cy="98" r="17" fill="#1f77b4"/><text x="446" y="103" class="t branco">A1</text>
+            <circle cx="516" cy="98" r="17" fill="#1f77b4" opacity=".3"/><text x="510" y="103" class="t branco">A2</text>
+            <rect x="580" y="38" width="150" height="96" fill="#f3f1ea" stroke="#dcd9d0"/>
+            <text x="594" y="60" class="tm"><tspan class="en">run B</tspan><tspan class="pt">simulação B</tspan></text>
+            <circle cx="622" cy="98" r="17" fill="#7f7f7f" opacity=".3"/><text x="616" y="103" class="t branco">B1</text>
+            <circle cx="688" cy="98" r="17" fill="#7f7f7f"/><text x="682" y="103" class="t branco">B2</text>
+            <line x1="452" y1="118" x2="512" y2="176" stroke="#86888b" stroke-width="1.5"/>
+            <line x1="688" y1="118" x2="628" y2="176" stroke="#86888b" stroke-width="1.5"/>
+            <rect x="410" y="180" width="320" height="90" fill="#fff" stroke="#7f7f7f" stroke-width="1.5"/>
+            <text x="424" y="202" class="tm"><tspan class="en">test: strangers, learning off</tspan><tspan class="pt">teste: estranhos, aprendizado desligado</tspan></text>
+            <circle cx="492" cy="238" r="19" fill="#1f77b4"/><text x="486" y="243" class="t branco">A1</text>
+            <circle cx="648" cy="238" r="19" fill="#7f7f7f"/><text x="642" y="243" class="t branco">B2</text>
+            <text x="532" y="234" class="t"><tspan class="en">price falls</tspan><tspan class="pt">o preço cai</tspan></text>
+            <text x="532" y="252" class="t">CI = 0.126</text>
           </svg>
+        </div>
+        <figcaption><b><span class="en">The two designs.</span><span class="pt">Os dois desenhos.</span></b> <span class="en">Freezing is not a simplification but the regime that matters for deployment: the policy that reaches a market is the one trained offline, and re-learning against a new competitor is paid for in realized profit over tens of thousands of rounds.</span><span class="pt">Congelar não é simplificação, e sim o regime que importa no uso real: a política que chega ao mercado é a treinada offline, e re-aprender contra um concorrente novo se paga em lucro realizado ao longo de dezenas de milhares de rodadas.</span></figcaption>
+      </figure>
+      <figure class="painel">
+        <div class="quadro"><img src="./figures/fig_cross_deploy_ci_comparison.png" alt="Within-pair versus cross-pair collusion index per matching" loading="lazy" /></div>
+        <figcaption><b><span class="en">Figure 7 of the paper.</span><span class="pt">Figura 7 do artigo.</span></b> <span class="en">Within-pair versus cross-pair collusion index, per matching.</span><span class="pt">Índice de colusão dentro do par versus entre pares, por pareamento.</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- 4 ---------------------------------------------------------------- -->
+    <section id="auditorias">
+      <h2><span class="n">4 · §4.3</span><span class="en">Five audits of the mechanism</span><span class="pt">Cinco auditorias do mecanismo</span></h2>
+      <p class="pergunta"><span class="en">Each test looks at one property a punishment rule would have to have. None finds the rule.</span><span class="pt">Cada teste olha uma propriedade que uma regra de punição teria de ter. Nenhum encontra a regra.</span></p>
+      <ol class="auditorias">
+        <li><span class="tag">(i)</span><div>
+          <h3><span class="en">The response carries no directional information</span><span class="pt">A resposta não carrega informação de direção</span></h3>
+          <p class="en">Force the algorithm to <em>raise</em> its price, a move that favors the rival. The rival reacts as it does to a cut: it drops and then returns. A rule built to punish betrayal does not punish generosity. This reproduces Epivent and Lambin (2024) in our population.</p>
+          <p class="pt">Force o algoritmo a <em>subir</em> o preço, um gesto que favorece o rival. O rival reage como reage a um corte: cai e depois volta. Uma regra feita para punir traição não pune generosidade. Isso reproduz Epivent e Lambin (2024) na nossa população.</p>
+        </div></li>
+        <li><span class="tag">(ii)</span><div>
+          <h3><span class="en">There is no working model of the opponent</span><span class="pt">Não há modelo do oponente</span></h3>
+          <p class="en">Against a grim-trigger punisher started cooperative, <span class="num">22 of 24</span> agents undercut within four rounds and absorb the permanent punishment. They destroy an arrangement the opponent stood ready to enforce.</p>
+          <p class="pt">Contra um punidor grim-trigger iniciado cooperativo, <span class="num">22 de 24</span> agentes cortam em até quatro rodadas e absorvem a punição permanente. Destroem um acordo que o oponente estava pronto para impor.</p>
+        </div></li>
+        <li><span class="tag">(iii)</span><div>
+          <h3><span class="en">No best-response structure off the path</span><span class="pt">Sem estrutura de melhor resposta fora do caminho</span></h3>
+          <p class="en">The 225-entry policy can be read cell by cell. The learned reaction functions have a mean Spearman correlation of <span class="num">0.016</span> with the static best response. Only the on-path point makes economic sense.</p>
+          <p class="pt">A política de 225 entradas pode ser lida célula a célula. As funções de reação aprendidas têm correlação de Spearman média de <span class="num">0,016</span> com a melhor resposta estática. Só o ponto do caminho faz sentido econômico.</p>
+        </div></li>
+        <li><span class="tag">(iv)</span><div>
+          <h3><span class="en">The return is over-determined, not selective</span><span class="pt">O retorno é sobre-determinado, não seletivo</span></h3>
+          <p class="en">Two frozen policies define a deterministic map on 225 states. In <span class="num">17 of 18</span> pairs there is a single attractor whose basin is the whole state space: any perturbation returns, for any reason. Random tables return <span class="num">62%</span> of the time; trained pairs, <span class="num">100%</span>. Section 5 lets you try it.</p>
+          <p class="pt">Duas políticas congeladas definem um mapa determinístico sobre 225 estados. Em <span class="num">17 de 18</span> pares há um único atrator cuja bacia é todo o espaço: qualquer perturbação volta, por qualquer motivo. Tabelas aleatórias voltam <span class="num">62%</span> das vezes; pares treinados, <span class="num">100%</span>. A seção 5 deixa você experimentar.</p>
+        </div></li>
+        <li><span class="tag">(v)</span><div>
+          <h3><span class="en">The absence is not architectural</span><span class="pt">A ausência não é arquitetural</span></h3>
+          <p class="en">Two hand-built rules in the same 225 × 15 matrix, one that punishes and forgives and one that punishes forever, produce the right dynamics by construction. The capacity is there; learning did not use it.</p>
+          <p class="pt">Duas regras construídas à mão na mesma matriz 225 × 15, uma que pune e perdoa e outra que pune para sempre, produzem a dinâmica certa por construção. A capacidade existe; o aprendizado não a usou.</p>
+        </div></li>
+      </ol>
+      <div class="duas">
+        <figure class="painel">
+          <div class="quadro"><img src="./figures/fig_grim_vs_nash.png" alt="Price paths against grim-trigger, constant-Nash and constant-monopoly opponents from a cooperative start" loading="lazy" /></div>
+          <figcaption><b><span class="en">Figure 4.</span><span class="pt">Figura 4.</span></b> <span class="en">Against a cooperative punisher (dashed), a constant-Nash and a constant-monopoly pricer. Vertical lines mark the agent's own undercut.</span><span class="pt">Contra um punidor cooperativo (tracejado), um Nash constante e um monopólio constante. As linhas verticais marcam o corte do próprio agente.</span></figcaption>
+        </figure>
+        <figure class="painel">
+          <div class="quadro"><img src="./figures/fig_constructive_punishment_trajectories.png" alt="Hand-built reactive and grim policies punishing a scripted rival's deviation" loading="lazy" /></div>
+          <figcaption><b><span class="en">Figure 6.</span><span class="pt">Figura 6.</span></b> <span class="en">Capacity control: the hand-built reactive rule punishes and forgives; the grim rule punishes permanently.</span><span class="pt">Controle de capacidade: a regra reativa construída à mão pune e perdoa; a regra grim pune permanentemente.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 5 ---------------------------------------------------------------- -->
+    <section id="bacia">
+      <h2><span class="n">5 · §4.3(iv), §4.6</span><span class="en">The basin of attraction, live</span><span class="pt">A bacia de atração, ao vivo</span></h2>
+      <p class="pergunta"><span class="en">Below is a real converged pair from the repository. Push it anywhere and watch it come back.</span><span class="pt">Abaixo, um par convergido real do repositório. Empurre-o para qualquer lugar e veja-o voltar.</span></p>
+      <div class="linha">
+        <div>
+          <p class="en">The state is the pair of last prices, one of 15 × 15 = 225 cells. Two frozen policies send every cell to exactly one next cell, so the joint play is a deterministic map, and by the pigeonhole principle every orbit ends in a cycle. The question is whether a rule selects the destination or the map leaves nowhere else to go. For this pair there is one destination, and every one of the 225 cells flows to it.</p>
+          <p class="pt">O estado é o par de últimos preços, uma de 15 × 15 = 225 células. Duas políticas congeladas mandam cada célula para exatamente uma célula seguinte, então o jogo conjunto é um mapa determinístico, e pelo princípio da casa dos pombos toda órbita termina num ciclo. A questão é se uma regra escolhe o destino ou se o mapa não deixa outro lugar para ir. Para este par há um destino só, e cada uma das 225 células escorre para ele.</p>
+        </div>
+        <aside class="nota"><span class="num">99.9% vs 79.2%</span><span class="en">mean dominant-basin share, trained pairs vs random Q-tables (Mann–Whitney p = 6.3 × 10⁻⁸)</span><span class="pt">bacia dominante média, pares treinados vs Q-tables aleatórias (Mann–Whitney p = 6,3 × 10⁻⁸)</span><span class="fig">§4.3(iv) · Fig. 5 · <code>null_model_impulse_response.py</code></span></aside>
+      </div>
+      <div id="demo">
+        <div class="quadro"><svg id="grade" viewBox="0 0 400 400" role="img" aria-label="Map of the 225 joint price states of a converged pair; click a cell to start there"></svg></div>
+        <div class="controles">
+          <p class="en">Click any cell, or use the buttons, to set the last prices of the two firms. Each step applies both frozen policies once.</p>
+          <p class="pt">Clique numa célula, ou use os botões, para fixar os últimos preços das duas firmas. Cada passo aplica as duas políticas congeladas uma vez.</p>
+          <div class="botoes">
+            <button type="button" id="b-corte"><span class="en">Firm 1 undercuts</span><span class="pt">Firma 1 corta</span></button>
+            <button type="button" id="b-alta"><span class="en">Firm 1 raises to the top</span><span class="pt">Firma 1 sobe ao máximo</span></button>
+            <button type="button" id="b-rival"><span class="en">Firm 2 undercuts</span><span class="pt">Firma 2 corta</span></button>
+            <button type="button" id="b-aleatorio"><span class="en">Random state</span><span class="pt">Estado aleatório</span></button>
           </div>
-          <div class="legenda en">CI is the collusion index: 0 at the competitive price, 1 at the monopoly price. Within the pair, 0.67; between strangers, 0.13, an 81% drop over 12 matchings. In an extended evaluation of 40 matchings, 30% price below the competitive level.</div>
-          <div class="legenda pt">CI é o índice de colusão: 0 no preço competitivo, 1 no de monopólio. Dentro do par, 0,67; entre estranhos, 0,13, uma queda de 81% em 12 pareamentos. Numa avaliação estendida com 40 pareamentos, 30% cobram abaixo do nível competitivo.</div>
+          <div class="leitura" id="leitura" aria-live="polite"></div>
+          <div class="legenda">
+            <span><i style="background:#1f77b4"></i><span class="en">attractor</span><span class="pt">atrator</span></span> &nbsp;
+            <span><i style="background:rgba(31,119,180,.10)"></i><span class="en">path taken</span><span class="pt">caminho percorrido</span></span> &nbsp;
+            <span><i style="border-color:#16181a"></i><span class="en">current state</span><span class="pt">estado atual</span></span><br />
+            <span class="en">Pair <code>pair_001_A</code>, grid of 15 prices from 1.02 to 2.38 (wider than Calvano's); dashed lines mark the competitive and monopoly prices.</span><span class="pt">Par <code>pair_001_A</code>, grade de 15 preços de 1,02 a 2,38 (mais larga que a de Calvano); as linhas tracejadas marcam os preços competitivo e de monopólio.</span>
+          </div>
         </div>
-
-        <div class="caixa">
-          <div class="titulo"><span class="en">Figure 7 of the paper</span><span class="pt">Figura 7 do artigo</span></div>
-          <img src="./figures/fig_cross_deploy_ci_comparison.png" alt="Within-pair versus cross-pair collusion index per matching" loading="lazy" />
+      </div>
+      <div class="linha">
+        <div>
+          <p class="en">This is the structural reason behind audit (i): with one globally attracting cycle, the orbit after a defection and the orbit after a cooperative shock cannot differ. What training adds is speed and placement, not selectivity. Trained pairs return in 3.6 steps against 13.9 for random tables, and land at high prices. Speed and placement without selectivity are calibration, not deterrence.</p>
+          <p class="pt">Esta é a razão estrutural por trás da auditoria (i): com um único ciclo globalmente atrator, a órbita após uma traição e a órbita após um choque cooperativo não podem diferir. O que o treino acrescenta é velocidade e colocação, não seletividade. Pares treinados voltam em 3,6 passos contra 13,9 das tabelas aleatórias, e param em preços altos. Velocidade e colocação sem seletividade são calibração, não dissuasão.</p>
         </div>
-      </section>
-
-      <!-- ================= AUDITORIAS ================= -->
-      <section class="aba" data-aba="auditorias">
-        <div class="palco-titulo">
-          <h2><span class="en">Five audits of the mechanism</span><span class="pt">Cinco auditorias do mecanismo</span></h2>
-          <p class="pergunta"><span class="en">A punishment rule reacts to deviations, tracks the rival, and makes deviating unprofitable. Does the learned response have any of that?</span><span class="pt">Uma regra de punição reage ao desvio, acompanha o rival e torna desviar não lucrativo. A resposta aprendida tem algo disso?</span></p>
+        <aside class="nota"><span class="num">3.62 vs 13.87</span><span class="en">steps to exact return, trained vs random (p = 5.8 × 10⁻³²); return rate 100% (90/90) vs 62.0% (310/500)</span><span class="pt">passos até o retorno exato, treinados vs aleatórios (p = 5,8 × 10⁻³²); taxa de retorno 100% (90/90) vs 62,0% (310/500)</span></aside>
+      </div>
+      <div class="linha">
+        <div>
+          <p class="en">The basin account also makes a prediction. Refining the price grid spreads the same exploration budget over more off-path states and should weaken coordination. It does: mean CI falls from 0.74 at 5 and 15 points to 0.43 at 200, and prices stay supracompetitive even at the finest grid.</p>
+          <p class="pt">A leitura de bacia também faz uma previsão. Refinar a grade de preços espalha o mesmo orçamento de exploração por mais estados fora do caminho e deve enfraquecer a coordenação. E enfraquece: o CI médio cai de 0,74 em 5 e 15 pontos para 0,43 em 200, e os preços seguem supracompetitivos mesmo na grade mais fina.</p>
         </div>
+        <aside class="nota"><span class="num">0.74 → 0.43</span><span class="en">mean CI, 15-point grid to 200-point grid, 20 seeds per level</span><span class="pt">CI médio, grade de 15 pontos para 200 pontos, 20 seeds por nível</span><span class="fig">§4.6 · Fig. 9 · <code>plot_grid_sensitivity.py</code></span></aside>
+      </div>
+    </section>
 
-        <div class="cartoes">
-          <div class="cartao"><div class="k"><span class="en">1 · direction</span><span class="pt">1 · direção</span></div>
-            <h3><span class="en">The response ignores the direction of the deviation</span><span class="pt">A resposta ignora o sentido do desvio</span></h3>
-            <p class="en">Force the algorithm to <em>raise</em> its price, a move that favors the rival. The rival reacts as it does to a cut: it drops and then returns. A rule built to punish betrayal does not punish generosity. This reproduces Epivent and Lambin (2024).</p>
-            <p class="pt">Force o algoritmo a <em>subir</em> o preço, um gesto que favorece o rival. O rival reage como reage a um corte: cai e depois volta. Uma regra feita para punir traição não pune generosidade. Isso reproduz Epivent e Lambin (2024).</p></div>
-          <div class="cartao"><div class="k"><span class="en">2 · rival</span><span class="pt">2 · rival</span></div>
-            <h3><span class="en">No working model of the opponent</span><span class="pt">Nenhum modelo do oponente</span></h3>
-            <p class="en">Against a grim-trigger punisher started cooperative, 22 of 24 agents undercut within four rounds and absorb the permanent punishment. They destroy an arrangement the opponent stood ready to enforce.</p>
-            <p class="pt">Contra um punidor grim-trigger iniciado cooperativo, 22 de 24 agentes cortam em até quatro rodadas e absorvem a punição permanente. Destroem um acordo que o oponente estava pronto para impor.</p></div>
-          <div class="cartao"><div class="k"><span class="en">3 · logic</span><span class="pt">3 · lógica</span></div>
-            <h3><span class="en">No best-response structure off the path</span><span class="pt">Sem estrutura de melhor resposta fora do caminho</span></h3>
-            <p class="en">The 225-entry policy can be read cell by cell. The learned reaction functions have a mean Spearman correlation of 0.016 with the static best response. Only the on-path point makes economic sense.</p>
-            <p class="pt">A política de 225 entradas pode ser lida célula a célula. As funções de reação aprendidas têm correlação de Spearman média de 0,016 com a melhor resposta estática. Só o ponto do caminho faz sentido econômico.</p></div>
-          <div class="cartao"><div class="k"><span class="en">4 · return</span><span class="pt">4 · retorno</span></div>
-            <h3><span class="en">The return is over-determined, not selective</span><span class="pt">O retorno é sobre-determinado, não seletivo</span></h3>
-            <p class="en">Two frozen policies define a deterministic map on 225 states. In 17 of 18 pairs there is a single attractor whose basin is the whole state space: any perturbation returns, for any reason. Random tables return only 62% of the time; trained pairs, 100%.</p>
-            <p class="pt">Duas políticas congeladas definem um mapa determinístico sobre 225 estados. Em 17 de 18 pares há um único atrator cuja bacia é todo o espaço: qualquer perturbação volta, por qualquer motivo. Tabelas aleatórias voltam 62% das vezes; pares treinados, 100%.</p></div>
-          <div class="cartao"><div class="k"><span class="en">5 · capacity</span><span class="pt">5 · capacidade</span></div>
-            <h3><span class="en">The table could express punishment</span><span class="pt">A tabela poderia expressar punição</span></h3>
-            <p class="en">Two hand-built rules in the same 225 × 15 matrix, one that punishes and forgives and one that punishes forever, produce the right dynamics by construction. The capacity is there; learning did not use it.</p>
-            <p class="pt">Duas regras construídas à mão na mesma matriz 225 × 15, uma que pune e perdoa e outra que pune para sempre, produzem a dinâmica certa por construção. A capacidade existe; o aprendizado não a usou.</p></div>
+    <!-- 6 ---------------------------------------------------------------- -->
+    <section id="incentivos">
+      <h2><span class="n">6 · §4.5</span><span class="en">What is deterred, and what is not</span><span class="pt">O que é dissuadido, e o que não é</span></h2>
+      <p class="pergunta"><span class="en">What if the deviation were made by someone who knows what they are doing?</span><span class="pt">E se o desvio fosse feito por alguém que sabe o que está fazendo?</span></p>
+      <div class="linha">
+        <div>
+          <p class="en">The original test measures a naive deviation: cut for one round, then return to the old policy. It does not pay, and we confirm it in 18 of 18 pairs. But no optimizer would choose that deviation. Fixing each partner's frozen policy and solving the induced 225-state decision problem exactly, the optimal deviation improves on converged profit by 14.8% on average. The pair leaves a seventh of the attainable payoff on the table, against the very partner it converged with.</p>
+          <p class="pt">O teste original mede um desvio ingênuo: cortar por uma rodada e voltar à política antiga. Não compensa, e confirmamos isso em 18 de 18 pares. Mas nenhum otimizador escolheria esse desvio. Fixando a política congelada de cada parceiro e resolvendo exatamente o problema de decisão induzido, de 225 estados, o desvio ótimo melhora o lucro convergido em 14,8% na média. O par deixa um sétimo do lucro alcançável na mesa, contra o próprio parceiro com quem convergiu.</p>
         </div>
-
-        <div class="caixa">
-          <div class="titulo"><span class="en">The basin of attraction</span><span class="pt">A bacia de atração</span></div>
-          <div class="rolagem">
-          <svg viewBox="0 0 760 270" role="img" aria-label="Basin of attraction: every trajectory drains to the same point">
-            <path d="M60 60 C 200 80, 300 180, 380 220 C 460 180, 560 80, 700 60" fill="none" stroke="var(--primario)" stroke-width="2.5"/>
-            <circle cx="380" cy="220" r="8" fill="var(--coop)"/>
-            <text x="396" y="226" class="t"><tspan class="en">the pair's high price</tspan><tspan class="pt">o preço alto do par</tspan></text>
-            <g stroke="var(--desvio)" stroke-width="1.8" fill="none">
-              <path d="M120 40 C 160 70, 230 130, 300 185"/>
-              <path d="M640 40 C 600 70, 530 130, 460 185"/>
-              <path d="M250 40 C 270 90, 310 150, 345 190"/>
-              <path d="M520 40 C 500 90, 450 150, 415 190"/>
-            </g>
-            <text x="90" y="32" class="tm"><tspan class="en">price cut</tspan><tspan class="pt">corte de preço</tspan></text>
-            <text x="600" y="32" class="tm"><tspan class="en">price hike</tspan><tspan class="pt">alta de preço</tspan></text>
-            <text x="228" y="32" class="tm"><tspan class="en">noise</tspan><tspan class="pt">ruído</tspan></text>
-            <text x="488" y="32" class="tm"><tspan class="en">anything at all</tspan><tspan class="pt">qualquer coisa</tspan></text>
-            <text x="40" y="258" class="tm"><tspan class="en">With one globally attracting cycle, the orbit after a defection and the orbit after a cooperative shock cannot differ.</tspan><tspan class="pt">Com um único ciclo globalmente atrator, a órbita após uma traição e a órbita após um choque cooperativo não podem diferir.</tspan></text>
+        <aside class="nota"><span class="num">+14.8%</span><span class="en">mean gain of the exact best response (median 12.8%, max 48.0%); 10 of 38 agents already at a best response; 10.4% under Calvano's own stopping rule</span><span class="pt">ganho médio da melhor resposta exata (mediana 12,8%, máx. 48,0%); 10 de 38 agentes já em melhor resposta; 10,4% sob a regra de parada de Calvano</span><span class="fig">§4.5 · Fig. 8 · <code>interpretable_ce_gap.py</code></span></aside>
+      </div>
+      <div class="linha">
+        <div>
+          <p class="en">In the vocabulary of Calvano et al. (2023), the deterrence is incomplete: genuine with respect to the one-period deviation they test, spurious with respect to the optimal one. We do not claim that retaliation plays no role against naive deviations; we claim that the role does not extend to the deviation an optimizer would choose. The high prices are not enforced; they are undisturbed.</p>
+          <p class="pt">No vocabulário de Calvano et al. (2023), a dissuasão é incompleta: genuína em relação ao desvio de um período que eles testam, espúria em relação ao desvio ótimo. Não afirmamos que a retaliação não tem papel contra desvios ingênuos; afirmamos que o papel não se estende ao desvio que um otimizador escolheria. Os preços altos não são defendidos; são apenas não perturbados.</p>
+        </div>
+        <aside class="nota"><span class="en">Calvano et al. (2020) report about half of their sessions in on-path Nash equilibrium with a mean Q-loss of 0.2%, a one-step improvement under the agent's own continuation. Our wedge is the value of the full optimal policy, which may leave the path. Both can hold at once.</span><span class="pt">Calvano et al. (2020) reportam metade das sessões em equilíbrio de Nash no caminho com Q-loss médio de 0,2%, uma melhoria de um passo sob a própria continuação do agente. Nossa cunha é o valor da política ótima inteira, que pode sair do caminho. As duas coisas valem ao mesmo tempo.</span></aside>
+      </div>
+      <figure class="painel">
+        <div class="quadro rolagem">
+          <svg viewBox="0 0 760 200" role="img" aria-label="The naive one-round deviation loses money; the optimal deviation gains 14.8%">
+            <line x1="380" y1="20" x2="380" y2="180" stroke="#dcd9d0"/>
+            <text x="30" y="28" class="tl"><tspan class="en">Naive deviation (the literature's test)</tspan><tspan class="pt">Desvio ingênuo (o teste da literatura)</tspan></text>
+            <rect x="30" y="90" width="150" height="16" fill="#7f7f7f"/>
+            <text x="190" y="103" class="t"><tspan class="en">− 0.20 discounted profit</tspan><tspan class="pt">− 0,20 de lucro descontado</tspan></text>
+            <text x="30" y="140" class="tm"><tspan class="en">cut for one round, then back to the old policy</tspan><tspan class="pt">corta por uma rodada, depois volta à política antiga</tspan></text>
+            <text x="30" y="158" class="tm"><tspan class="en">unprofitable in 18 of 18 pairs</tspan><tspan class="pt">não compensa em 18 de 18 pares</tspan></text>
+            <text x="410" y="28" class="tl"><tspan class="en">Optimal deviation (exact dynamic programming)</tspan><tspan class="pt">Desvio ótimo (programação dinâmica exata)</tspan></text>
+            <rect x="410" y="90" width="222" height="16" fill="#1f77b4"/>
+            <text x="642" y="103" class="t"><tspan class="en">+ 14.8%</tspan><tspan class="pt">+ 14,8%</tspan></text>
+            <text x="410" y="140" class="tm"><tspan class="en">a full plan that anticipates the partner's reaction</tspan><tspan class="pt">um plano completo, que antecipa a reação do parceiro</tspan></text>
+            <text x="410" y="158" class="tm"><tspan class="en">28 of 38 agents leave profit on the table</tspan><tspan class="pt">28 de 38 agentes deixam lucro na mesa</tspan></text>
           </svg>
-          </div>
         </div>
+        <figcaption><b><span class="en">Naive versus optimal deviation.</span><span class="pt">Desvio ingênuo versus desvio ótimo.</span></b> <span class="en">The arrangement deters only the deviation no optimizer would choose.</span><span class="pt">O acordo dissuade apenas o desvio que nenhum otimizador escolheria.</span></figcaption>
+      </figure>
+      <figure class="painel">
+        <div class="quadro"><img src="./figures/fig_ce_gap_interpretable.png" alt="Exact best-response gain over converged play for 38 agents" loading="lazy" /></div>
+        <figcaption><b><span class="en">Figure 8 of the paper.</span><span class="pt">Figura 8 do artigo.</span></b> <span class="en">Exact best-response gain over converged play, per agent.</span><span class="pt">Ganho da melhor resposta exata sobre o jogo convergido, por agente.</span></figcaption>
+      </figure>
+    </section>
 
-        <div class="duas">
-          <div class="caixa">
-            <div class="titulo"><span class="en">Figure 4: against a cooperative punisher</span><span class="pt">Figura 4: contra um punidor cooperativo</span></div>
-            <img src="./figures/fig_grim_vs_nash.png" alt="Price paths against grim-trigger, constant-Nash and constant-monopoly opponents from a cooperative start" loading="lazy" />
-          </div>
-          <div class="caixa">
-            <div class="titulo"><span class="en">Figure 6: capacity control</span><span class="pt">Figura 6: controle de capacidade</span></div>
-            <img src="./figures/fig_constructive_punishment_trajectories.png" alt="Hand-built reactive and grim policies punishing a scripted rival's deviation" loading="lazy" />
-          </div>
+    <!-- 7 ---------------------------------------------------------------- -->
+    <section id="implicacoes">
+      <h2><span class="n">7 · §5, §6</span><span class="en">What changes</span><span class="pt">O que muda</span></h2>
+      <p class="pergunta"><span class="en">If there is no cartel, does the problem go away?</span><span class="pt">Se não há cartel, o problema desaparece?</span></p>
+      <div class="linha">
+        <div>
+          <p class="en">No. The high prices are robust and the harm to consumers is real. What changes is the diagnosis, and with it the remedy. A drop-and-return seen in market data does not prove retaliation; a competition authority looking for threats inside these algorithms will not find them. What exists is a fragile convention of the pair, which vanishes when the composition changes.</p>
+          <p class="pt">Não. Os preços altos são robustos e o dano ao consumidor é real. O que muda é o diagnóstico, e com ele o remédio. Uma queda e retorno vista em dados de mercado não prova retaliação; um órgão de concorrência que procurar ameaças dentro desses algoritmos não as encontrará. O que existe é uma convenção frágil do par, que desaparece quando a composição muda.</p>
+          <p class="en">For those who build pricing systems, the lesson is methodological. An algorithm that performs well with the partners it was trained with has demonstrated a property of the ensemble, not of the algorithm. Testing with strangers, with shocks in both directions, against a random null and with an incentive calculation is an evaluation standard defined on frozen policies, and it is portable to any multi-agent system.</p>
+          <p class="pt">Para quem constrói sistemas de preço, a lição é metodológica. Um algoritmo que funciona bem com os parceiros com os quais foi treinado demonstrou uma propriedade do conjunto, não do algoritmo. Testar com estranhos, com choques nos dois sentidos, contra um nulo aleatório e com um cálculo de incentivos é um padrão de avaliação definido sobre políticas congeladas, e é portátil para qualquer sistema multiagente.</p>
         </div>
-      </section>
-
-      <!-- ================= INCENTIVOS ================= -->
-      <section class="aba" data-aba="incentivos">
-        <div class="palco-titulo">
-          <h2><span class="en">What is deterred, and what is not</span><span class="pt">O que é dissuadido, e o que não é</span></h2>
-          <p class="pergunta"><span class="en">What if the deviation were made by someone who knows what they are doing?</span><span class="pt">E se o desvio fosse feito por alguém que sabe o que está fazendo?</span></p>
-          <p class="en">The original test measures a naive deviation: cut for one round, then return to the old policy. It does not pay, and we confirm it in 18 of 18 pairs. But no optimizer would choose that deviation. Fixing each partner's frozen policy and solving the induced 225-state decision problem exactly, the optimal deviation improves on converged profit by 14.8% on average.</p>
-          <p class="pt">O teste original mede um desvio ingênuo: cortar por uma rodada e voltar à política antiga. Não compensa, e confirmamos isso em 18 de 18 pares. Mas nenhum otimizador escolheria esse desvio. Fixando a política congelada de cada parceiro e resolvendo exatamente o problema de decisão induzido, de 225 estados, o desvio ótimo melhora o lucro convergido em 14,8% na média.</p>
-          <p class="en">In the vocabulary of Calvano et al. (2023), the deterrence is incomplete: genuine with respect to the one-period deviation they test, spurious with respect to the optimal one. The high prices are not enforced; they are undisturbed.</p>
-          <p class="pt">No vocabulário de Calvano et al. (2023), a dissuasão é incompleta: genuína em relação ao desvio de um período que eles testam, espúria em relação ao desvio ótimo. Os preços altos não são defendidos; são apenas não perturbados.</p>
+        <aside class="nota"><span class="en">The natural theoretical name for the converged object is a self-confirming equilibrium (Fudenberg and Levine, 1993): beliefs correct on the path, never tested off it. We offer it as an interpretation, not a theorem.</span><span class="pt">O nome teórico natural para o objeto convergido é equilíbrio autoconfirmado (Fudenberg e Levine, 1993): crenças corretas no caminho, nunca testadas fora dele. Oferecemos isso como interpretação, não como teorema.</span><span class="fig">§5</span></aside>
+      </div>
+      <div class="caixa-nao">
+        <span class="rotulo"><span class="en">What we do not claim</span><span class="pt">O que não afirmamos</span></span>
+        <p class="en">That the prices are harmless, that retaliation plays no role against naive deviations, or that the result extends beyond its scope: tabular Q-learning, two firms, the Bertrand–logit environment and the baseline parameters of Calvano et al. (2020). The protocol is portable; the numbers are bounded by this model.</p>
+        <p class="pt">Que os preços sejam inofensivos, que a retaliação não tenha papel contra desvios ingênuos, ou que o resultado se estenda além do seu escopo: Q-learning tabular, duas firmas, o ambiente Bertrand-logit e os parâmetros de base de Calvano et al. (2020). O protocolo é portátil; os números valem para este modelo.</p>
+      </div>
+      <div class="linha">
+        <div>
+          <p class="en">Collusion here is not a strategy either agent has; it is a convention the pair keeps. This reading unifies what the literature had measured separately: the pair-specificity Calvano et al. observed on rematching, the direction-blind response Epivent and Lambin documented, the gap between impulse patterns and equilibrium den Boer, Meylahn and Schinkel established, and the punishment-free coupling Banchio and Mantegazza modeled.</p>
+          <p class="pt">A colusão, aqui, não é uma estratégia que algum agente tem; é uma convenção que o par mantém. Essa leitura unifica o que a literatura tinha medido em separado: a especificidade ao par que Calvano et al. observaram no rematch, a resposta sem direção que Epivent e Lambin documentaram, a distância entre padrões de impulso e equilíbrio que den Boer, Meylahn e Schinkel estabeleceram, e o acoplamento sem punição que Banchio e Mantegazza modelaram.</p>
         </div>
+      </div>
+    </section>
 
-        <div class="caixa">
-          <div class="titulo"><span class="en">Naive versus optimal deviation</span><span class="pt">Desvio ingênuo versus desvio ótimo</span></div>
-          <div class="rolagem">
-          <svg viewBox="0 0 760 210" role="img" aria-label="The naive one-round deviation loses money; the optimal deviation gains 14.8%">
-            <line x1="380" y1="24" x2="380" y2="190" stroke="var(--grade)"/>
-            <text x="40" y="30" class="tl"><tspan class="en">Naive deviation (the literature's test)</tspan><tspan class="pt">Desvio ingênuo (o teste da literatura)</tspan></text>
-            <rect x="40" y="96" width="150" height="18" fill="var(--desvio)" opacity=".8"/>
-            <text x="200" y="110" class="t"><tspan class="en">− 0.20 in discounted profit</tspan><tspan class="pt">− 0,20 de lucro descontado</tspan></text>
-            <text x="40" y="146" class="tm"><tspan class="en">cut for one round, then back to the old policy</tspan><tspan class="pt">corta por uma rodada, depois volta à política antiga</tspan></text>
-            <text x="40" y="164" class="tm"><tspan class="en">unprofitable in 18 of 18 pairs</tspan><tspan class="pt">não compensa em 18 de 18 pares</tspan></text>
-            <text x="420" y="30" class="tl"><tspan class="en">Optimal deviation (exact dynamic programming)</tspan><tspan class="pt">Desvio ótimo (programação dinâmica exata)</tspan></text>
-            <rect x="420" y="96" width="220" height="18" fill="var(--coop)" opacity=".85"/>
-            <text x="650" y="110" class="t"><tspan class="en">+ 14.8%</tspan><tspan class="pt">+ 14,8%</tspan></text>
-            <text x="420" y="146" class="tm"><tspan class="en">a full plan that anticipates the partner's reaction</tspan><tspan class="pt">um plano completo, que antecipa a reação do parceiro</tspan></text>
-            <text x="420" y="164" class="tm"><tspan class="en">28 of 38 agents leave profit on the table</tspan><tspan class="pt">28 de 38 agentes deixam lucro na mesa</tspan></text>
-          </svg>
-          </div>
+    <!-- 8 ---------------------------------------------------------------- -->
+    <section id="dados">
+      <h2><span class="n">8</span><span class="en">Paper, code and data</span><span class="pt">Artigo, código e dados</span></h2>
+      <div class="linha">
+        <div>
+          <p class="en">Kauê Lopes de Moraes and Rodrigo De Losso. <em>Algorithmic Collusion Without Deterrence: Auditing the Punishment Mechanism in Q-Learning Pricing Agents.</em> In <em>7th ACM International Conference on AI in Finance (ICAIF '26)</em>, Milan, Italy. Open access, CC BY 4.0. <a href="https://doi.org/10.1145/3858063.3858865">doi:10.1145/3858063.3858865</a> · <a href="./paper.pdf">PDF</a></p>
+          <p class="pt">Kauê Lopes de Moraes e Rodrigo De Losso. <em>Algorithmic Collusion Without Deterrence: Auditing the Punishment Mechanism in Q-Learning Pricing Agents.</em> Em <em>7th ACM International Conference on AI in Finance (ICAIF '26)</em>, Milão, Itália. Acesso aberto, CC BY 4.0. <a href="https://doi.org/10.1145/3858063.3858865">doi:10.1145/3858063.3858865</a> · <a href="./paper.pdf">PDF</a></p>
+          <p class="en">The converged Q-tables are in the repository, so every figure can be regenerated without retraining. Scripts run from the repository root.</p>
+          <p class="pt">As Q-tables convergidas estão no repositório, então toda figura pode ser regenerada sem retreinar. Os scripts rodam a partir da raiz do repositório.</p>
         </div>
-
-        <div class="duas">
-          <div class="caixa">
-            <div class="titulo"><span class="en">Figure 8: best-response gain per agent</span><span class="pt">Figura 8: ganho da melhor resposta por agente</span></div>
-            <img src="./figures/fig_ce_gap_interpretable.png" alt="Exact best-response gain over converged play for 38 agents" loading="lazy" />
-          </div>
-          <div class="caixa">
-            <div class="titulo"><span class="en">Figure 9: grid granularity</span><span class="pt">Figura 9: granularidade da grade</span></div>
-            <img src="./figures/fig_grid_sensitivity_ci.png" alt="Mean collusion index declines as the price grid is refined from 5 to 200 points" loading="lazy" />
-            <div class="legenda en">The basin account predicts that a finer grid, spreading the same exploration over more states, weakens coordination. It does: mean CI falls from 0.74 at 5 and 15 points to 0.43 at 200.</div>
-            <div class="legenda pt">A leitura de bacia prevê que uma grade mais fina, espalhando a mesma exploração por mais estados, enfraquece a coordenação. E enfraquece: o CI médio cai de 0,74 em 5 e 15 pontos para 0,43 em 200.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= PAPER ================= -->
-      <section class="aba" data-aba="paper">
-        <div class="palco-titulo">
-          <h2><span class="en">Paper, code and data</span><span class="pt">Artigo, código e dados</span></h2>
-          <p class="en">Kauê Lopes de Moraes and Rodrigo De Losso (University of São Paulo). <em>Algorithmic Collusion Without Deterrence: Auditing the Punishment Mechanism in Q-Learning Pricing Agents.</em> 7th ACM International Conference on AI in Finance (ICAIF '26), Milan, November 2026. Open access, CC BY 4.0.</p>
-          <p class="pt">Kauê Lopes de Moraes e Rodrigo De Losso (Universidade de São Paulo). <em>Algorithmic Collusion Without Deterrence: Auditing the Punishment Mechanism in Q-Learning Pricing Agents.</em> 7th ACM International Conference on AI in Finance (ICAIF '26), Milão, novembro de 2026. Acesso aberto, CC BY 4.0.</p>
-          <p><a href="https://doi.org/10.1145/3858063.3858865">doi:10.1145/3858063.3858865</a> · <a href="./paper.pdf"><span class="en">PDF (camera-ready)</span><span class="pt">PDF (camera-ready)</span></a> · <a href="https://github.com/kauelopes/algorithmic-collusion-without-deterrence"><span class="en">repository</span><span class="pt">repositório</span></a></p>
-        </div>
-
-        <div class="caixa">
-          <div class="titulo"><span class="en">From data to figures</span><span class="pt">Dos dados às figuras</span></div>
-          <p class="nota en">The converged Q-tables are in <code>results/</code>, so every figure can be regenerated without retraining. Scripts run from the repository root.</p>
-          <p class="nota pt">As Q-tables convergidas estão em <code>results/</code>, então toda figura pode ser regenerada sem retreinar. Os scripts rodam a partir da raiz do repositório.</p>
-          <div class="rolagem">
-          <table>
-            <thead><tr><th><span class="en">Result</span><span class="pt">Resultado</span></th><th>Script</th><th><span class="en">Input</span><span class="pt">Entrada</span></th></tr></thead>
-            <tbody>
-              <tr><td><span class="en">Impulse responses (Fig. 3)</span><span class="pt">Respostas ao impulso (Fig. 3)</span></td><td><code>analysis/scripts/plot_impulse_ce_gap.py</code></td><td><code>results/impulse_response__20260807/</code></td></tr>
-              <tr><td><span class="en">Cooperative punisher (Fig. 4)</span><span class="pt">Punidor cooperativo (Fig. 4)</span></td><td><code>analysis/scripts/overlay_cooperative_init.py</code></td><td><code>results/cross_deploy__…/training/*/agents/</code></td></tr>
-              <tr><td><span class="en">Random-policy null (Fig. 5)</span><span class="pt">Nulo de políticas aleatórias (Fig. 5)</span></td><td><code>analysis/scripts/null_model_impulse_response.py</code></td><td><span class="en">same Q-tables</span><span class="pt">as mesmas Q-tables</span></td></tr>
-              <tr><td><span class="en">Capacity control (Fig. 6)</span><span class="pt">Controle de capacidade (Fig. 6)</span></td><td><code>analysis/scripts/punishment_representational_capacity.py</code></td><td><span class="en">none (constructive)</span><span class="pt">nenhuma (construtivo)</span></td></tr>
-              <tr><td><span class="en">Cross-pairing (Fig. 7)</span><span class="pt">Pares cruzados (Fig. 7)</span></td><td><code>analysis/scripts/plot_cross_deploy_analysis.py</code></td><td><code>results/cross_deploy__…/eval/</code></td></tr>
-              <tr><td><span class="en">Best-response gain (Fig. 8)</span><span class="pt">Ganho da melhor resposta (Fig. 8)</span></td><td><code>analysis/scripts/interpretable_ce_gap.py</code></td><td><span class="en">Q-tables + reference run</span><span class="pt">Q-tables + run de referência</span></td></tr>
-              <tr><td><span class="en">Grid granularity (Fig. 9)</span><span class="pt">Granularidade da grade (Fig. 9)</span></td><td><code>analysis/scripts/plot_grid_sensitivity.py</code></td><td><code>results/grid_sensitivity__20260807_144718/</code></td></tr>
-            </tbody>
-          </table>
-          </div>
-        </div>
-
-        <div class="caixa">
-          <div class="titulo"><span class="en">Setup</span><span class="pt">Instalação</span></div>
+        <aside class="nota"><span class="en">Repository: <a href="https://github.com/kauelopes/algorithmic-collusion-without-deterrence">github.com/kauelopes/algorithmic-collusion-without-deterrence</a>. MIT license for code and data; 318 tests.</span><span class="pt">Repositório: <a href="https://github.com/kauelopes/algorithmic-collusion-without-deterrence">github.com/kauelopes/algorithmic-collusion-without-deterrence</a>. Licença MIT para código e dados; 318 testes.</span></aside>
+      </div>
+      <div class="rolagem">
+      <table>
+        <thead><tr><th><span class="en">Result</span><span class="pt">Resultado</span></th><th>Script</th><th><span class="en">Input</span><span class="pt">Entrada</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="en">Impulse responses (Fig. 3)</span><span class="pt">Respostas ao impulso (Fig. 3)</span></td><td><code>analysis/scripts/plot_impulse_ce_gap.py</code></td><td><code>results/impulse_response__20260807/</code></td></tr>
+          <tr><td><span class="en">Cooperative punisher (Fig. 4)</span><span class="pt">Punidor cooperativo (Fig. 4)</span></td><td><code>analysis/scripts/overlay_cooperative_init.py</code></td><td><code>results/cross_deploy__…/training/*/agents/</code></td></tr>
+          <tr><td><span class="en">Random-policy null (Fig. 5)</span><span class="pt">Nulo de políticas aleatórias (Fig. 5)</span></td><td><code>analysis/scripts/null_model_impulse_response.py</code></td><td><span class="en">same Q-tables</span><span class="pt">as mesmas Q-tables</span></td></tr>
+          <tr><td><span class="en">Capacity control (Fig. 6)</span><span class="pt">Controle de capacidade (Fig. 6)</span></td><td><code>analysis/scripts/punishment_representational_capacity.py</code></td><td><span class="en">none (constructive)</span><span class="pt">nenhuma (construtivo)</span></td></tr>
+          <tr><td><span class="en">Cross-pairing (Fig. 7)</span><span class="pt">Pares cruzados (Fig. 7)</span></td><td><code>analysis/scripts/plot_cross_deploy_analysis.py</code></td><td><code>results/cross_deploy__…/eval/</code></td></tr>
+          <tr><td><span class="en">Best-response gain (Fig. 8)</span><span class="pt">Ganho da melhor resposta (Fig. 8)</span></td><td><code>analysis/scripts/interpretable_ce_gap.py</code></td><td><span class="en">Q-tables + reference run</span><span class="pt">Q-tables + run de referência</span></td></tr>
+          <tr><td><span class="en">Grid granularity (Fig. 9)</span><span class="pt">Granularidade da grade (Fig. 9)</span></td><td><code>analysis/scripts/plot_grid_sensitivity.py</code></td><td><code>results/grid_sensitivity__20260807_144718/</code></td></tr>
+          <tr><td><span class="en">The live map above</span><span class="pt">O mapa ao vivo acima</span></td><td><code>analysis/scripts/export_policy_json.py</code></td><td><code>results/cross_deploy__…/training/pair_001_A/</code></td></tr>
+        </tbody>
+      </table>
+      </div>
 <pre>python -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install -r requirements.txt
 python -m pytest -q tests</pre>
-        </div>
-
-        <div class="caixa">
-          <div class="titulo"><span class="en">Cite</span><span class="pt">Como citar</span></div>
 <pre>@inproceedings{moraes2026deterrence,
   author    = {Lopes de Moraes, Kau{\^e} and De Losso, Rodrigo},
   title     = {Algorithmic Collusion Without Deterrence: Auditing the Punishment
@@ -289,80 +379,14 @@ python -m pytest -q tests</pre>
   year      = {2026}, publisher = {ACM}, address = {Milan, Italy},
   doi       = {10.1145/3858063.3858865}
 }</pre>
-        </div>
-      </section>
-    </div>
+    </section>
+  </article>
+</div>
 
-    <!-- ================= PAINEL LATERAL ================= -->
-    <aside id="painel">
-      <div class="painel-aba" data-aba="visao">
-        <h2><span class="en">In numbers</span><span class="pt">Em números</span></h2>
-        <div class="tiles">
-          <div class="tile coop"><div class="valor">0.67</div><div class="rotulo"><span class="en">collusion index, within the pair</span><span class="pt">índice de colusão, dentro do par</span></div></div>
-          <div class="tile desvio"><div class="valor">0.13</div><div class="rotulo"><span class="en">collusion index, between strangers</span><span class="pt">índice de colusão, entre estranhos</span></div></div>
-          <div class="tile prim"><div class="valor">17/18</div><div class="rotulo"><span class="en">pairs with a single global attractor</span><span class="pt">pares com um único atrator global</span></div></div>
-          <div class="tile desvio"><div class="valor">+14.8%</div><div class="rotulo"><span class="en">gain of the optimal deviation</span><span class="pt">ganho do desvio ótimo</span></div></div>
-        </div>
-        <p class="en"><strong>What we claim.</strong> None of the five audits finds a punishment mechanism in the converged policies. What training produces is a dyad-specific basin of attraction.</p>
-        <p class="pt"><strong>O que afirmamos.</strong> Nenhuma das cinco auditorias encontra um mecanismo de punição nas políticas convergidas. O que o treino produz é uma bacia de atração específica do par.</p>
-        <p class="en"><strong>What we do not claim.</strong> That the prices are not harmful (they are), or that retaliation plays no role against naive deviations (it does). The claim is that the role does not extend to the deviation an optimizer would choose.</p>
-        <p class="pt"><strong>O que não afirmamos.</strong> Que os preços não causam dano (causam), ou que a retaliação não tem papel contra desvios ingênuos (tem). A afirmação é que esse papel não se estende ao desvio que um otimizador escolheria.</p>
-        <p class="en"><strong>Scope.</strong> Tabular Q-learning, two firms, the Bertrand–logit environment and parameters of Calvano et al. (2020). The protocol is portable; the numbers are bounded by this model.</p>
-        <p class="pt"><strong>Escopo.</strong> Q-learning tabular, duas firmas, o ambiente Bertrand-logit e os parâmetros de Calvano et al. (2020). O protocolo é portátil; os números valem para este modelo.</p>
-      </div>
+<footer>
+  <div class="miolo"><span class="en">Companion site to the paper. Figures reproduced from the camera-ready version. The live map in section 5 runs a converged pair of frozen policies from the repository in the browser.</span><span class="pt">Site do artigo. Figuras reproduzidas da versão camera-ready. O mapa ao vivo da seção 5 roda no navegador um par convergido de políticas congeladas do repositório.</span></div>
+</footer>
 
-      <div class="painel-aba" data-aba="metodo" hidden>
-        <h2><span class="en">Why freeze the policies</span><span class="pt">Por que congelar as políticas</span></h2>
-        <div class="tiles">
-          <div class="tile prim"><div class="valor">−81%</div><div class="rotulo"><span class="en">collusion index, within → across pairs</span><span class="pt">índice de colusão, dentro → entre pares</span></div></div>
-          <div class="tile"><div class="valor">12</div><div class="rotulo"><span class="en">cross-matchings, all unique seeds</span><span class="pt">pareamentos cruzados, seeds únicas</span></div></div>
-        </div>
-        <p class="en">A mechanism claim is a claim about the agent: that it carries a rule that detects and punishes deviations. Testing it requires taking the agent out of the context that produced it, with learning off, so that what the policy carries is separated from what re-learning recovers.</p>
-        <p class="pt">Uma afirmação de mecanismo é uma afirmação sobre o agente: que ele carrega uma regra que detecta e pune desvios. Testá-la exige tirar o agente do contexto que o produziu, com o aprendizado desligado, para separar o que a política carrega do que o re-aprendizado recupera.</p>
-        <p class="en">Freezing is also the regime that matters in practice: the policy that reaches a market is the one trained offline. Re-learning against a new competitor costs tens of thousands of rounds at live prices.</p>
-        <p class="pt">Congelar também é o regime que importa na prática: a política que chega ao mercado é a treinada offline. Re-aprender contra um concorrente novo custa dezenas de milhares de rodadas a preços reais.</p>
-      </div>
-
-      <div class="painel-aba" data-aba="auditorias" hidden>
-        <h2><span class="en">Audit results</span><span class="pt">Resultados das auditorias</span></h2>
-        <div class="tiles">
-          <div class="tile desvio"><div class="valor">22/24</div><div class="rotulo"><span class="en">agents that undercut a cooperative punisher within 4 rounds</span><span class="pt">agentes que cortam um punidor cooperativo em até 4 rodadas</span></div></div>
-          <div class="tile"><div class="valor">0.016</div><div class="rotulo"><span class="en">mean correlation of reaction functions with the best response</span><span class="pt">correlação média das funções de reação com a melhor resposta</span></div></div>
-          <div class="tile prim"><div class="valor">99.9%</div><div class="rotulo"><span class="en">mean dominant-basin share, trained pairs (random: 79.2%)</span><span class="pt">bacia dominante média, pares treinados (aleatório: 79,2%)</span></div></div>
-          <div class="tile prim"><div class="valor">100%</div><div class="rotulo"><span class="en">exact return after a forced deviation (random tables: 62%)</span><span class="pt">retorno exato após desvio forçado (tabelas aleatórias: 62%)</span></div></div>
-        </div>
-        <p class="en"><strong>Reading the null.</strong> Trained pairs return faster and more often than random tables, and land at higher prices. Speed and placement without selectivity are calibration, not deterrence: the pair returns from anywhere, for any reason.</p>
-        <p class="pt"><strong>Como ler o nulo.</strong> Pares treinados voltam mais rápido e mais vezes que tabelas aleatórias, e param em preços mais altos. Velocidade e colocação sem seletividade são calibração, não dissuasão: o par volta de qualquer lugar, por qualquer motivo.</p>
-      </div>
-
-      <div class="painel-aba" data-aba="incentivos" hidden>
-        <h2><span class="en">Incentive accounting</span><span class="pt">Contabilidade de incentivos</span></h2>
-        <div class="tiles">
-          <div class="tile"><div class="valor">18/18</div><div class="rotulo"><span class="en">pairs where the one-period undercut does not pay</span><span class="pt">pares em que o corte de um período não compensa</span></div></div>
-          <div class="tile desvio"><div class="valor">14.8%</div><div class="rotulo"><span class="en">mean gain of the exact best response (median 12.8%, max 48.0%)</span><span class="pt">ganho médio da melhor resposta exata (mediana 12,8%, máx. 48,0%)</span></div></div>
-          <div class="tile"><div class="valor">10/38</div><div class="rotulo"><span class="en">agents already at an exact best response</span><span class="pt">agentes já em melhor resposta exata</span></div></div>
-          <div class="tile"><div class="valor">10.4%</div><div class="rotulo"><span class="en">mean gain when retrained under Calvano's own stopping rule</span><span class="pt">ganho médio ao retreinar sob a regra de parada de Calvano</span></div></div>
-        </div>
-        <p class="en"><strong>Relation to Calvano et al.'s Q-loss.</strong> They report about half of their sessions in on-path Nash equilibrium with a mean Q-loss of 0.2%, the forfeited payoff of a one-step improvement under the agent's own continuation. Our wedge is the value of the full optimal policy, which may leave the path and keep deviating. Both can hold at once.</p>
-        <p class="pt"><strong>Relação com o Q-loss de Calvano et al.</strong> Eles reportam cerca de metade das sessões em equilíbrio de Nash no caminho, com Q-loss médio de 0,2%, a perda de uma melhoria de um passo sob a própria continuação do agente. Nossa cunha é o valor da política ótima inteira, que pode sair do caminho e continuar desviando. As duas coisas valem ao mesmo tempo.</p>
-      </div>
-
-      <div class="painel-aba" data-aba="paper" hidden>
-        <h2><span class="en">Repository layout</span><span class="pt">Estrutura do repositório</span></h2>
-<pre>src/         environment, agent, trainer
-experiments/ runners
-configs/     YAML
-analysis/    one script per figure
-results/     converged Q-tables
-figures/     as in the paper
-paper/       LaTeX source + PDF
-tests/       318 tests</pre>
-        <p class="en">License: MIT for code and data. The paper is CC BY 4.0.</p>
-        <p class="pt">Licença: MIT para código e dados. O artigo é CC BY 4.0.</p>
-      </div>
-    </aside>
-  </main>
-
-  <script src="./app.js"></script>
+<script src="./app.js"></script>
 </body>
 </html>
