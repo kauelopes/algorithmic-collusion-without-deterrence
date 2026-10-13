@@ -253,10 +253,16 @@
         <aside class="nota"><span class="num">99.9% vs 79.2%</span><span class="en">mean dominant-basin share, trained pairs vs random Q-tables (Mann–Whitney p = 6.3 × 10⁻⁸)</span><span class="pt">bacia dominante média, pares treinados vs Q-tables aleatórias (Mann–Whitney p = 6,3 × 10⁻⁸)</span><span class="fig">§4.3(iv) · Fig. 5 · <code>null_model_impulse_response.py</code></span></aside>
       </div>
       <div id="demo">
-        <div class="quadro"><svg id="grade" viewBox="0 0 400 400" role="img" aria-label="Map of the 225 joint price states of a converged pair; click a cell to start there"></svg></div>
+        <div class="quadro"><svg id="grade" viewBox="0 0 400 400" role="img" aria-label="Map of the 225 joint price states: one converged pair, or the mean field of 1,024 pairs; click a cell to start there"></svg></div>
         <div class="controles">
-          <p class="en">Click any cell, or use the buttons, to set the last prices of the two firms. Each step applies both frozen policies once.</p>
-          <p class="pt">Clique numa célula, ou use os botões, para fixar os últimos preços das duas firmas. Cada passo aplica as duas políticas congeladas uma vez.</p>
+          <div class="seletor" role="group" aria-label="What the map shows">
+            <button type="button" data-modo="par" class="ativa" aria-pressed="true"><span class="en">One pair</span><span class="pt">Um par</span></button>
+            <button type="button" data-modo="campo" disabled aria-pressed="false"><span class="en">Mean field, 1,024 pairs</span><span class="pt">Campo médio, 1.024 pares</span></button>
+          </div>
+          <p class="en so-par">Click any cell, or use the buttons, to set the last prices of the two firms. Each step applies both frozen policies once.</p>
+          <p class="pt so-par">Clique numa célula, ou use os botões, para fixar os últimos preços das duas firmas. Cada passo aplica as duas políticas congeladas uma vez.</p>
+          <p class="en so-campo">Each arrow is the mean one-step displacement from that cell, averaged over the 1,024 frozen pairs trained at scale. Q-tables are not averaged, only the maps they induce: every arrow is the mean of 1,024 steps that real pairs took. A mean of maps is not a map: where pairs disagree on direction the arrows shorten and can point to where no single pair goes, so read the shading, not the arrows, for where the pairs actually settle.</p>
+          <p class="pt so-campo">Cada seta é o deslocamento médio de um passo a partir daquela célula, na média dos 1.024 pares congelados treinados em escala. As Q-tables não são somadas, só os mapas que elas induzem: cada seta é a média de 1.024 passos que pares reais deram. A média dos mapas não é um mapa: onde os pares discordam na direção as setas encurtam e podem apontar para onde nenhum par vai, então leia o sombreado, não as setas, para saber onde os pares de fato param.</p>
           <div class="botoes">
             <button type="button" id="b-corte"><span class="en">Firm 1 undercuts</span><span class="pt">Firma 1 corta</span></button>
             <button type="button" id="b-alta"><span class="en">Firm 1 raises to the top</span><span class="pt">Firma 1 sobe ao máximo</span></button>
@@ -264,11 +270,16 @@
             <button type="button" id="b-aleatorio"><span class="en">Random state</span><span class="pt">Estado aleatório</span></button>
           </div>
           <div class="leitura" id="leitura" aria-live="polite"></div>
-          <div class="legenda">
+          <div class="legenda so-par">
             <span><i style="background:#1f77b4"></i><span class="en">attractor</span><span class="pt">atrator</span></span> &nbsp;
             <span><i style="background:rgba(31,119,180,.10)"></i><span class="en">path taken</span><span class="pt">caminho percorrido</span></span> &nbsp;
             <span><i style="border-color:#16181a"></i><span class="en">current state</span><span class="pt">estado atual</span></span><br />
             <span class="en">Pair <code>pair_001_A</code>, grid of 15 prices from 1.02 to 2.38 (wider than Calvano's); dashed lines mark the competitive and monopoly prices.</span><span class="pt">Par <code>pair_001_A</code>, grade de 15 preços de 1,02 a 2,38 (mais larga que a de Calvano); as linhas tracejadas marcam os preços competitivo e de monopólio.</span>
+          </div>
+          <div class="legenda so-campo">
+            <span><i style="background:rgba(31,119,180,.55)"></i><span class="en">share of pairs whose attractor contains the cell (darker = more; at most 8.0%)</span><span class="pt">fração dos pares cujo atrator contém a célula (mais escuro = mais; no máximo 8,0%)</span></span> &nbsp;
+            <span><i style="border-color:#16181a"></i><span class="en">selected cell</span><span class="pt">célula escolhida</span></span><br />
+            <span class="en">Arrows longer than 1.6 cells are truncated; click the cell for the full step. Run <code>attractor_pilot__20261013_180049</code>, Calvano's grid of 15 prices from 1.43 to 1.97, a different population from the pair on the left and from the paper's 18 pairs.</span><span class="pt">Setas maiores que 1,6 célula são truncadas; clique na célula para ler o passo inteiro. Run <code>attractor_pilot__20261013_180049</code>, grade de Calvano com 15 preços de 1,43 a 1,97, uma população diferente do par ao lado e dos 18 pares do paper.</span>
           </div>
         </div>
       </div>
@@ -382,6 +393,7 @@
           <tr><td><span class="en">Cross-pairing at scale (1,024 pairs)</span><span class="pt">Pares cruzados em escala (1.024 pares)</span></td><td><code>analysis/scripts/attractor_cross_prediction.py</code></td><td><code>experiments/attractor_pilot.py</code> <span class="en">(~12 min to regenerate)</span><span class="pt">(~12 min para regenerar)</span></td></tr>
           <tr><td><span class="en">The audits at scale (1,024 pairs)</span><span class="pt">As auditorias em escala (1.024 pares)</span></td><td><code>analysis/scripts/audits_at_scale.py</code></td><td><span class="en">the same run as the row above</span><span class="pt">o mesmo run da linha acima</span></td></tr>
           <tr><td><span class="en">The live map above</span><span class="pt">O mapa ao vivo acima</span></td><td><code>analysis/scripts/export_policy_json.py</code></td><td><code>results/cross_deploy__…/training/pair_001_A/</code></td></tr>
+          <tr><td><span class="en">The mean field above (1,024 pairs)</span><span class="pt">O campo médio acima (1.024 pares)</span></td><td><code>analysis/scripts/export_population_json.py</code></td><td><span class="en">the same run as the audits at scale</span><span class="pt">o mesmo run das auditorias em escala</span></td></tr>
         </tbody>
       </table>
       </div>

@@ -65,6 +65,7 @@ without retraining. Run the scripts from the repository root.
 | §4.6, Fig. 9 | grid-granularity sweep | `analysis/scripts/plot_grid_sensitivity.py` | `results/grid_sensitivity__20260807_144718/` |
 | §4.4 | cross-pairing at scale: 1,024 pairs, CI 0.669 within vs 0.134 across | `analysis/scripts/attractor_distribution.py`, `attractor_cross_prediction.py` | `results/attractor_pilot__*/` (regenerate below, ~12 min on 24 CPU cores); derived data in `analysis/data/attractor_*` |
 | §4.2, §4.3(iv), §4.5 | the audits at scale on the same 1,024 pairs: return after the shock (1,006/1,024), single attractor (914/1,024), naive deviation unprofitable (946/1,024), exact best-response gain (17.5%) | `analysis/scripts/audits_at_scale.py` | same run; `analysis/data/audits_at_scale.csv`, `analysis/reports/audits_at_scale.md` |
+| site, section 5 | the mean one-step field of the same 1,024 maps (the `Mean field` mode of the live map; Q-tables are not averaged, the induced maps are) | `analysis/scripts/export_population_json.py` | same run; `docs/data/population.json` |
 
 Figures 1 and 2 are diagrams and have no script.
 

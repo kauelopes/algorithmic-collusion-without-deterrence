@@ -168,6 +168,19 @@ ol.auditorias .num { font-family: var(--mono); font-size: 13px; color: var(--ink
 #demo .ref-txt { font-family: var(--narrow); font-size: 9.5px; fill: var(--gray); }
 #demo .traj { fill: none; stroke: var(--ink); stroke-width: 1.4; }
 #demo .controles { font-family: var(--narrow); font-size: 14px; }
+#demo .seletor { display: flex; gap: 0; margin-bottom: 12px; border-bottom: 1px solid var(--rule); }
+#demo .seletor button { border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 6px 10px; background: transparent; }
+#demo .seletor button.ativa { border-bottom-color: var(--accent); color: var(--accent-ink); }
+#demo .seletor button:hover:not(:disabled) { background: transparent; }
+#demo .seletor button:disabled { color: var(--mute); cursor: default; }
+#demo .so-campo { display: none; }
+#demo[data-modo="campo"] .so-campo { display: block; }
+#demo[data-modo="campo"] .so-par { display: none; }
+#demo .cel.sombra { fill: var(--accent); }
+#demo .cel.sombra:hover { fill: var(--accent-ink); }
+#demo .seta { stroke: var(--ink); stroke-width: .9; }
+#demo .ponta { fill: var(--ink); }
+#demo .parado { fill: var(--ink); }
 #demo .controles p { margin: 0 0 10px; color: var(--ink-2); font-family: var(--serif); font-size: 15.5px; }
 #demo .botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 #demo button {

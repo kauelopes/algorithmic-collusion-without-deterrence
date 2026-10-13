@@ -10,6 +10,8 @@
       already: "Already on the attractor: ({a}, {b}), CI {c}.",
       loading: "Loading the pair…",
       fail: "The map needs docs/data/pair.json; open the site over HTTP.",
+      campo: "From ({a}, {b}): mean next state ({c}, {d}) over {n} pairs.\nMean step length {m}; on the attractor of {s}% of the pairs.",
+      campoDica: "Click a cell to read the mean step from it.",
       f1: "firm 1, last price", f2: "firm 2, last price", ne: "competitive", m: "monopoly"
     },
     "pt-BR": {
@@ -20,6 +22,8 @@
       already: "Já no atrator: ({a}, {b}), CI {c}.",
       loading: "Carregando o par…",
       fail: "O mapa precisa de docs/data/pair.json; abra o site por HTTP.",
+      campo: "De ({a}, {b}): próximo estado médio ({c}, {d}) em {n} pares.\nPasso médio {m}; no atrator de {s}% dos pares.",
+      campoDica: "Clique numa célula para ler o passo médio a partir dela.",
       f1: "firma 1, último preço", f2: "firma 2, último preço", ne: "competitivo", m: "monopólio"
     }
   };
@@ -67,21 +71,45 @@
   spy();
 
   // ---------- mapa ao vivo ----------
+  // Dois modos: "par" anima o mapa determinístico de um par (pair.json);
+  // "campo" desenha o deslocamento médio por célula numa população (population.json).
   var svg = document.getElementById("grade");
   var leitura = document.getElementById("leitura");
+  var demoEl = document.getElementById("demo");
+  var dados = { par: null, campo: null }, modo = "par";
   if (svg) {
     leitura.textContent = t("loading");
-    fetch("./data/pair.json").then(function (r) { return r.json(); }).then(montar).catch(function () {
-      leitura.textContent = t("fail");
+    fetch("./data/pair.json").then(function (r) { return r.json(); }).then(function (D) {
+      dados.par = D; montar();
+    }).catch(function () { leitura.textContent = t("fail"); });
+    fetch("./data/population.json").then(function (r) { return r.json(); }).then(function (P) {
+      dados.campo = P;
+      document.querySelectorAll("#demo .seletor button").forEach(function (b) { b.disabled = false; });
+      if (modo === "campo") montar();
+    }).catch(function () {});
+    document.querySelectorAll("#demo .seletor button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-modo");
+        if (m === modo || !dados[m]) return;
+        modo = m; montar();
+      });
     });
   }
 
-  function montar(D) {
+  function montar() {
+    var D = dados[modo];
+    if (!D) return;
     var n = D.grid.length, X0 = 46, Y0 = 14, L = 338, c = L / n;
     var NS = "http://www.w3.org/2000/svg";
-    var att = {}; D.attractor.forEach(function (s) { att[s[0] + "," + s[1]] = true; });
     var reduzido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var timer = null, cells = {};
+    var att = {};
+    if (modo === "par") D.attractor.forEach(function (s) { att[s[0] + "," + s[1]] = true; });
+    demoEl.setAttribute("data-modo", modo);
+    document.querySelectorAll("#demo .seletor button").forEach(function (b) {
+      b.classList.toggle("ativa", b.getAttribute("data-modo") === modo);
+      b.setAttribute("aria-pressed", b.getAttribute("data-modo") === modo ? "true" : "false");
+    });
 
     function el(tag, attrs, parent) {
       var e = document.createElementNS(NS, tag);
@@ -97,11 +125,17 @@
     function ci(p) { return (p - D.p_ne) / (D.p_m - D.p_ne); }
 
     svg.innerHTML = "";
+    var attMax = 0;
+    if (modo === "campo") D.att.forEach(function (row) { row.forEach(function (v) { if (v > attMax) attMax = v; }); });
     var gCells = el("g", {});
     for (var i = 0; i < n; i++) for (var j = 0; j < n; j++) {
       var r = el("rect", { x: X0 + i * c, y: Y0 + (n - 1 - j) * c, width: c, height: c, "class": "cel" }, gCells);
       r.dataset.i = i; r.dataset.j = j;
       if (att[i + "," + j]) r.classList.add("att");
+      if (modo === "campo" && attMax > 0) {
+        r.classList.add("sombra");
+        r.style.fillOpacity = (0.08 + 0.92 * D.att[i][j] / attMax).toFixed(3);
+      }
       cells[i + "," + j] = r;
       r.addEventListener("click", (function (ii, jj) { return function () { rodar(ii, jj); }; })(i, j));
     }
@@ -122,13 +156,28 @@
     }
     var ax1 = el("text", { x: X0 + L / 2, y: Y0 + L + 26, "text-anchor": "middle", "class": "eixo-titulo", "data-ax": "f1" }, gAx);
     var ax2 = el("text", { x: 10, y: Y0 + L / 2, "class": "eixo-titulo", "data-ax": "f2", transform: "rotate(-90 10 " + (Y0 + L / 2) + ")", "text-anchor": "middle" }, gAx);
+    // campo vetorial médio: uma seta por célula, comprimento em unidades de célula (truncado)
+    var gSetas = el("g", { "class": "setas", "pointer-events": "none" });
+    if (modo === "campo") {
+      var passo = D.grid[1] - D.grid[0], maxLen = 1.6 * c;
+      var defs = el("defs", {});
+      var mk = el("marker", { id: "ponta", viewBox: "0 0 6 6", refX: "5", refY: "3", markerWidth: "4", markerHeight: "4", orient: "auto-start-reverse" }, defs);
+      el("path", { d: "M0,0 L6,3 L0,6 Z", "class": "ponta" }, mk);
+      for (var a = 0; a < n; a++) for (var b = 0; b < n; b++) {
+        var vx = D.dx[a][b] / passo * c, vy = -D.dy[a][b] / passo * c;
+        var len = Math.sqrt(vx * vx + vy * vy);
+        if (len < 0.08 * c) { el("circle", { cx: cx(a), cy: cy(b), r: 1.2, "class": "parado" }, gSetas); continue; }
+        var f = Math.min(1, maxLen / len);
+        el("line", { x1: cx(a), y1: cy(b), x2: cx(a) + vx * f, y2: cy(b) + vy * f, "class": "seta", "marker-end": "url(#ponta)" }, gSetas);
+      }
+    }
     var gPath = el("g", {});
     var path = el("polyline", { "class": "traj", points: "" }, gPath);
 
     function relabel() {
       ax1.textContent = t("f1"); ax2.textContent = t("f2");
       gRef.querySelectorAll("text").forEach(function (x) { x.textContent = t(x.getAttribute("data-ref")); });
-      if (!timer) mostrarAtrator();
+      if (!timer) { if (modo === "par") mostrarAtrator(); else leitura.textContent = t("campoDica"); }
     }
     function mostrarAtrator() {
       var s = D.attractor[0];
@@ -139,7 +188,19 @@
       Object.keys(cells).forEach(function (k) { cells[k].classList.remove("rota", "atual"); });
       path.setAttribute("points", "");
     }
+    function lerCampo(i, j) {
+      limpar();
+      cells[i + "," + j].classList.add("atual");
+      var x1 = D.grid[i] + D.dx[i][j], y1 = D.grid[j] + D.dy[i][j];
+      path.setAttribute("points", cx(i) + "," + cy(j) + " " + (X0 + (pos(x1) + 0.5) * c) + "," + (Y0 + (n - pos(y1) - 0.5) * c));
+      leitura.textContent = t("campo", {
+        a: fmt(D.grid[i]), b: fmt(D.grid[j]), c: fmt(x1), d: fmt(y1),
+        n: D.n_pairs.toLocaleString(lang === "pt-BR" ? "pt-BR" : "en-US"),
+        m: fmt(D.mag[i][j]), s: (100 * D.att[i][j]).toFixed(1).replace(".", lang === "pt-BR" ? "," : ".")
+      });
+    }
     function rodar(i, j) {
+      if (modo === "campo") return lerCampo(i, j);
       limpar();
       var traj = [[i, j]], seen = {}; seen[i + "," + j] = true;
       var ii = i, jj = j, guard = 0;
@@ -172,13 +233,24 @@
         while (!fim) { fim = (k === traj.length - 1); passo(); }
       } else { passo(); timer = setInterval(passo, 420); }
     }
-    var a0 = D.attractor[0];
-    document.getElementById("b-corte").addEventListener("click", function () { rodar(0, a0[1]); });
-    document.getElementById("b-alta").addEventListener("click", function () { rodar(n - 1, a0[1]); });
-    document.getElementById("b-rival").addEventListener("click", function () { rodar(a0[0], 0); });
-    document.getElementById("b-aleatorio").addEventListener("click", function () {
-      rodar(Math.floor(Math.random() * n), Math.floor(Math.random() * n));
-    });
+    // os botões partem do atrator do par; no campo, da crista mais frequente
+    var a0;
+    if (modo === "par") a0 = D.attractor[0];
+    else {
+      var best = 0, bi = 0, bj = 0;
+      for (var u = 0; u < n; u++) for (var v = 0; v < n; v++) if (D.att[u][v] > best) { best = D.att[u][v]; bi = u; bj = v; }
+      a0 = [bi, bj];
+    }
+    demo.botoes = {
+      "b-corte": function () { rodar(0, a0[1]); },
+      "b-alta": function () { rodar(n - 1, a0[1]); },
+      "b-rival": function () { rodar(a0[0], 0); },
+      "b-aleatorio": function () { rodar(Math.floor(Math.random() * n), Math.floor(Math.random() * n)); }
+    };
     demo.ready = true; demo.relabel = relabel; relabel();
   }
+  ["b-corte", "b-alta", "b-rival", "b-aleatorio"].forEach(function (id) {
+    var b = document.getElementById(id);
+    if (b) b.addEventListener("click", function () { if (demo.botoes) demo.botoes[id](); });
+  });
 })();
