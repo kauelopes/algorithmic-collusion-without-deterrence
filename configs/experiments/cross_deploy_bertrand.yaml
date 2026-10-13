@@ -1,0 +1,57 @@
+experiment_name: cross_deploy_calvano
+
+# Cross-deployment experiment (EXP-01).
+# Tests whether collusive behavior learned via co-training transfers to
+# an independently-trained partner — or collapses (SCE vs Nash distinction).
+#
+# Protocol:
+#   Phase 1: 40 training runs (20 pairs × 2 environments, seeds 0-39)
+#             Each pair trains two Q-learners together (co-training);
+#             two pairs = two independent training trajectories.
+#   Phase 2: Cross-deploy pair n: agent_0 from envA(seed=n) × agent_0 from envB(seed=n+20)
+#   Phase 3: Within-deploy pair n: agent_0 × agent_1 from envA(seed=n) (original partners)
+#
+# Hypothesis:
+#   H1a: CI within-pair ≈ 0.62 (collusion persists with training partner)
+#   H1b: CI cross-pair  << 0.62 (collusion collapses with new partner)
+#
+# Training params: identical to Calvano replication (phase2b_calvano_q_learning.yaml)
+
+environment:
+  type: bertrand
+  demand:
+    a: 2.0
+    mu: 0.25
+    a0: 0.0
+  cost:
+    c: 1.0
+  market:
+    n_firms: 2
+    grid_extend: 1.0
+  state:
+    info_structure: rival_prices
+
+agent:
+  type: q_learning
+  n_actions: 15
+  memory_length: 2
+  q_init: opponent_optimized
+  alpha: 0.15
+  gamma: 0.95
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay_steps: 1150000
+  epsilon_decay_type: geometric
+
+training:
+  total_steps: 2000000
+  eval_interval: 10000
+  eval_window: 200000
+  seed: 0
+  early_stop:
+    enabled: false
+
+eval:
+  steps: 100000
+  interval: 1000
+  seed: 99                # fixed env reset seed for all eval episodes

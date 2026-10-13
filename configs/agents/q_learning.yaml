@@ -1,0 +1,9 @@
+type: q_learning
+n_actions: 20
+q_max: 1.0
+alpha: 0.1
+gamma: 0.95
+epsilon_start: 1.0
+epsilon_end: 0.01
+epsilon_decay_steps: 100000
+memory_length: 1   # must match environment.state.memory_length

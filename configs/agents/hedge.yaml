@@ -1,0 +1,5 @@
+type: hedge
+q_max: 1.0
+n_actions: 20
+eta: 0.01
+obs_dim: 1

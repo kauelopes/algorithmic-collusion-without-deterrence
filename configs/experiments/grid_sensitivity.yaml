@@ -1,0 +1,59 @@
+experiment_name: grid_sensitivity_calvano
+
+# EXP-02: Grid Granularity Sensitivity (Table 4a)
+#
+# Tests whether collusion index declines with finer price grids.
+# Hypothesis: larger state space → less off-path exploration → less collusion.
+#
+# Fixed: N=2, rival_prices, Q-learning, all Calvano params except n_prices.
+# Vary:  n_prices ∈ [5, 15, 50, 100, 200]  (20 seeds per level = 100 runs)
+#
+# State space per level (n_prices^2 for rival_prices + memory_length=2):
+#   n=5:   25 states   (exhaustive exploration in 2M steps)
+#   n=15:  225 states  (Calvano baseline — CI≈0.62)
+#   n=50:  2500 states
+#   n=100: 10000 states
+#   n=200: 40000 states (avg 50 visits/state over 2M steps)
+#
+# Run via: make sweep_grid_sensitivity N_SEEDS=20 N_WORKERS=4
+
+environment:
+  type: bertrand
+  demand:
+    a: 2.0
+    mu: 0.25
+    a0: 0.0
+  cost:
+    c: 1.0
+  market:
+    n_firms: 2
+    grid_extend: 1.0
+  state:
+    info_structure: rival_prices
+
+# Agent config is parameterized by n_prices; this shows the baseline (n=15).
+# The sweep script overrides n_actions for each level.
+agent:
+  type: q_learning
+  n_actions: 15          # TEMPLATE — overridden per level in sweep script
+  memory_length: 2
+  q_init: opponent_optimized
+  alpha: 0.15
+  gamma: 0.99
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay_steps: 1150000
+  epsilon_decay_type: geometric
+
+training:
+  total_steps: 2000000
+  eval_interval: 10000
+  eval_window: 200000
+  seed: 0
+  early_stop:
+    enabled: false     # consistent with Calvano replication
+
+# Sensitivity levels (used by sweep_grid_sensitivity.py)
+sweep:
+  n_prices_levels: [5, 15, 50, 100, 200]
+  n_seeds: 20

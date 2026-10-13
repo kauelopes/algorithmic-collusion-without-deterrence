@@ -1,0 +1,39 @@
+experiment_name: phase2b_calvano_replication
+
+# Calvano et al. (2020) AER replication baseline.
+# N=2 firms, logit demand, Q-learning with rival-prices state (Calvano setup).
+# Expected result: CI ∈ [0.60, 0.85] across 20 seeds.
+
+environment:
+  type: bertrand                    # selects MultiAgentBertrandEnv
+  demand:
+    a: 2.0                          # product quality index — shifts demand up; higher a → higher equilibrium prices
+    mu: 0.25                        # logit demand elasticity — lower mu → less elastic → easier to sustain high prices
+    a0: 0.0                         # outside option utility (normalized to zero)
+  cost:
+    c: 1.0                          # marginal cost per unit — sets the floor for profitable prices
+  market:
+    n_firms: 2
+    grid_extend: 1.0                # Calvano grid: p_min = p_NE - extend*(p_M-p_NE), p_max = p_M + extend*(p_M-p_NE)
+  state:
+    info_structure: rival_prices    # Calvano state: agent observes all firms' prices from previous period
+
+agent:
+  type: q_learning
+  n_actions: 15                     # number of discrete price levels; q_max/action_min set by env from grid_extend
+  memory_length: 2                  # how many past price vectors form the state; 2 firms × 1 lag → 15^2 = 225 Q-table rows
+  q_init: opponent_optimized        # Calvano "type O": Q[:,p] = mean_rivals π(p,rivals)/(1-γ); removes argmax-0 bias
+  alpha: 0.15                       # learning rate — how fast Q-values are updated toward new TD targets (Calvano value)
+  gamma: 0.99                       # discount factor — weight on future rewards; higher → agents value long-run cooperation more (Calvano uses 0.95)
+  epsilon_start: 1.0                # initial exploration rate — agent acts randomly at the start
+  epsilon_end: 0.01                 # final exploration rate — nearly greedy after decay
+  epsilon_decay_steps: 1150000      # delta≈4e-6 (Calvano); ε_end=0.01 at step 1.15M, greedy for remaining 850k steps
+  epsilon_decay_type: geometric     # Calvano et al. use geometric decay: ε_t = ε_start * (1-δ)^t
+
+training:
+  total_steps: 2000000              # 2M steps — CI still rising at 1M with linear schedule; 2M ensures convergence
+  eval_interval: 10000
+  eval_window: 200000               # last 10% of 2M steps for convergence metrics
+  seed: 0
+  early_stop:
+    enabled: false                  # disabled — early stop was firing during collusion growth phase (step 750k–900k)

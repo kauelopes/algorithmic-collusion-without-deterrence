@@ -1,0 +1,63 @@
+experiment_name: calvano_careful
+
+# Replicação do experimento base de Calvano et al. (2020), Tabela 1.
+#
+# Parâmetros alinhados com AER_fcode/baseline/A_InputParameters.txt:
+#   - gamma: 0.95      (delta=0.95 do paper; era 0.99)
+#   - grid_extend: 0.1 (extend1=extend2=0.1; era 1.0 → grid 10× mais largo)
+#   - n_actions: 15    (numPrices=15)
+#   - n_firms: 2       (numAgents=2)
+#   - q_init: opponent_optimized (typeQ='O')
+#   - alpha: 0.15, demanda logit com a=2, mu=0.25, c=1
+#
+# Divergências deliberadas em relação ao paper original:
+#   - init_mode: random (Calvano usa p_min determinístico no início de cada sessão)
+#   - episode_length: 10.000 steps (Calvano não reseta dentro de uma sessão —
+#     horizonte infinito; resets periódicos aqui garantem cobertura do espaço
+#     de estados, especialmente com grid_extend=0.1 e espaço de estados menor)
+#   - Número de runs: rodamos seeds individuais (Calvano agrega 1.000 sessões MC)
+#   - Critério de parada: early_stop por estabilidade de política (Calvano usa
+#     PerfMeasPeriodLength=4 episódios × 25.000 iters = 100k iters estáveis)
+
+environment:
+  type: bertrand
+  demand:
+    a: 2.0
+    mu: 0.25
+    a0: 0.0
+  cost:
+    c: 1.0
+  market:
+    n_firms: 2
+    grid_extend: 0.1
+    init_mode: random          # "p_min" | "random" | "p_nash"
+  state:
+    info_structure: rival_prices
+
+agent:
+  type: q_learning
+  n_actions: 15
+  memory_length: 2
+  q_init: opponent_optimized
+  alpha: 0.15
+  gamma: 0.95
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay_steps: 4500000  # 90% de 5M — decay mais lento que o baseline (1.15M/2M)
+  epsilon_decay_type: geometric
+
+training:
+  total_steps: 10000000
+  eval_interval: 10000
+  eval_window: 1000000           # 10% de 10M
+  seed: 42
+  episode_length: 10000          # reset env a cada 10k steps; null desativa
+  early_stop:
+    enabled: true
+    stability_threshold: 0.005   # variação máxima na greedy action entre evals
+    patience: 15                 # ~150k steps de política estável para parar
+    min_steps: 5000000           # não dispara antes de epsilon ter decaído (~4.5M) + margem
+  mlflow:
+    enabled: true
+    experiment_name: calvano_careful
+    tracking_uri: sqlite:///mlflow.db

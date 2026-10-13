@@ -1,0 +1,4 @@
+total_steps: 200000
+eval_interval: 5000
+eval_window: 10000   # steps averaged for final convergence metrics
+seed: 42

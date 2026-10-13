@@ -1,0 +1,23 @@
+# Agente model-based com modelo do RIVAL — Rota A do p4 ("avaliar sem executar").
+# Ver src/agents/mb_rival.py para a justificativa (tesoura da dissuasão) e H1b.
+type: mb_rival
+
+n_actions: 15
+memory_length: 2          # duopólio, rival_prices: o estado é o PAR de preços
+gamma: 0.95               # Calvano Tabela 1
+
+# exploração — mesmo schedule canônico do p3 (é o que erode o Q-learning; manter
+# igual é o que torna a comparação com a réplica q_learning honesta)
+epsilon_start: 1.0
+epsilon_end: 0.01
+epsilon_decay_steps: 1000000
+epsilon_decay_type: geometric
+
+# --- planejamento ---------------------------------------------------------
+plan_every: 1000          # iteração de valor a cada k passos (warm start em v_plan)
+
+# --- modelo do rival ------------------------------------------------------
+prior_off_path: uniform   # uniform | sticky | optimistic — o que ele acredita ONDE
+                          # NUNCA ESTEVE, que é o território da ameaça
+prior_strength: 1.0       # pseudo-contagens (Laplace) que misturam prior e dado
+model_estimator: frequency  # frequency (default) | argmax (o B̂ determinístico)

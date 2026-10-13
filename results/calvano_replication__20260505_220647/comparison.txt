@@ -1,0 +1,22 @@
+============================================================
+Calvano Replication — CI Comparison
+============================================================
+Target (Calvano paper): CI ∈ [0.60, 0.85]
+
+Baseline sweep (bertrand_sweep__20260422_200905):
+  seeds: 20
+  CI mean:   0.4033
+  CI median: 0.3325
+  CI std:    0.0888
+  CI > 0.3:  20/20
+  CI > 0.6:  0/20
+
+Replication (calvano_replication__20260505_220647):
+  seeds: 50
+  CI mean:   0.6245
+  CI median: 0.6756
+  CI std:    0.1253
+  CI > 0.3:  50/50
+  CI > 0.6:  30/50
+  Milestone 2B.2: OK ✓ (CI mean ∈ [0.60, 0.85])
+============================================================

@@ -1,0 +1,41 @@
+experiment_name: cross_deploy_calvano
+environment:
+  type: bertrand
+  demand:
+    a: 2.0
+    mu: 0.25
+    a0: 0.0
+  cost:
+    c: 1.0
+  market:
+    n_firms: 2
+    grid_extend: 1.0
+  state:
+    info_structure: rival_prices
+agent:
+  type: q_learning
+  n_actions: 15
+  memory_length: 2
+  q_init: opponent_optimized
+  alpha: 0.15
+  gamma: 0.95
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay_steps: 1150000
+  epsilon_decay_type: geometric
+training:
+  total_steps: 2000000
+  eval_interval: 10000
+  eval_window: 200000
+  seed: 28
+  early_stop:
+    enabled: false
+eval:
+  steps: 100000
+  interval: 1000
+  seed: 99
+_meta:
+  timestamp: '2026-08-07T20:38:51'
+  git_commit: 35d477c
+  experiment_file: configs/experiments/cross_deploy_bertrand.yaml
+  overrides_applied: []

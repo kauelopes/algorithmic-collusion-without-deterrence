@@ -1,0 +1,56 @@
+experiment_name: calvano_criterion_a9
+
+# A9 — populacao treinada ate o criterio de Calvano (sem resets de episodio),
+# para rerodar a cadeia de audit (IRF, overlay cooperativo, DP exato) e testar
+# se os achados do draftB sobrevivem ao regime de treino fiel.
+# Origem: painel de revisao 2026-08-07 (Dominio MAJOR 6 / DA MAJOR 7 / EIC
+# MAJOR 3) — a divergencia com a verificacao de IC do Calvano IJIO pode ser
+# regime de treino. Ver docs/proximos_passos.md item A9.
+#
+# Deriva de calvano_careful.yaml com UMA mudanca substantiva:
+#   - episode_length: null  (SEM resets — horizonte unico, como Calvano)
+# Mantido: grid_extend 0.1, params Tabela 1, early_stop por estabilidade com
+# min_steps 5M (epsilon decai ate ~4.5M), teto 10M.
+# Divergencias restantes vs Calvano: init_mode random (nao p_min) e seeds
+# individuais em vez de 1.000 sessoes MC.
+
+environment:
+  type: bertrand
+  demand:
+    a: 2.0
+    mu: 0.25
+    a0: 0.0
+  cost:
+    c: 1.0
+  market:
+    n_firms: 2
+    grid_extend: 0.1
+    init_mode: random          # "p_min" | "random" | "p_nash"
+  state:
+    info_structure: rival_prices
+
+agent:
+  type: q_learning
+  n_actions: 15
+  memory_length: 2
+  q_init: opponent_optimized
+  alpha: 0.15
+  gamma: 0.95
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay_steps: 4500000
+  epsilon_decay_type: geometric
+
+training:
+  total_steps: 10000000
+  eval_interval: 10000
+  eval_window: 1000000
+  seed: 0                       # sobrescrito por --set training.seed=N
+  episode_length: null          # SEM resets — a mudanca central do A9
+  early_stop:
+    enabled: true
+    stability_threshold: 0.005
+    patience: 15
+    min_steps: 5000000
+  mlflow:
+    enabled: false              # 5 runs paralelos em container; sqlite local trava

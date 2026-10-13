@@ -1,0 +1,14 @@
+demand:
+  a: 1.0
+  b: 1.0
+
+cost:
+  c: 0.0
+
+market:
+  n_firms: 2
+  opponent_strategy: nash_fixed
+
+state:
+  memory_length: 1
+  info_structure: bandit

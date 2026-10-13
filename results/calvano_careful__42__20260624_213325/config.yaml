@@ -1,0 +1,46 @@
+experiment_name: calvano_careful
+environment:
+  type: bertrand
+  demand:
+    a: 2.0
+    mu: 0.25
+    a0: 0.0
+  cost:
+    c: 1.0
+  market:
+    n_firms: 2
+    grid_extend: 0.1
+    init_mode: random
+  state:
+    info_structure: rival_prices
+agent:
+  type: q_learning
+  n_actions: 15
+  memory_length: 2
+  q_init: opponent_optimized
+  alpha: 0.15
+  gamma: 0.95
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay_steps: 4500000
+  epsilon_decay_type: geometric
+training:
+  total_steps: 10000000
+  eval_interval: 10000
+  eval_window: 1000000
+  seed: 42
+  episode_length: 10000
+  early_stop:
+    enabled: true
+    stability_threshold: 0.005
+    patience: 15
+    min_steps: 5000000
+  mlflow:
+    enabled: true
+    experiment_name: calvano_careful
+    tracking_uri: sqlite:///mlflow.db
+_meta:
+  timestamp: '2026-06-24T20:12:31'
+  git_commit: 3b6fb5c
+  experiment_file: configs/experiments/calvano_careful.yaml
+  overrides_applied: []

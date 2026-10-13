@@ -1,0 +1,47 @@
+strategy_test:
+  experiment_name: calvano_strategy_test
+  n_steps: 500
+
+  environment:
+    type: bertrand
+    demand:
+      a: 2.0
+      mu: 0.25
+      a0: 0.0
+    cost:
+      c: 1.0
+    market:
+      n_firms: 2
+      p_min: 1.0
+      p_max: 2.1
+    state:
+      info_structure: rival_prices
+
+  trained_agent:
+    type: q_learning
+    n_actions: 15
+    q_max: 2.1
+    action_min: 1.0
+    memory_length: 2
+    gamma: 0.95
+    alpha: 0.15
+    epsilon_start: 0.0
+    epsilon_end: 0.0
+    epsilon_decay_steps: 1
+
+  strategy_opponents:
+    - type: nash_player
+    - type: competitive_player
+    - type: monopoly_player
+    - type: imitation_player
+    - type: imitation_plus_player
+      rate: 0.10
+    - type: tit_for_tat_player
+      defect_threshold: 0.05
+    - type: grim_player
+      defect_threshold: 0.05
+    - type: wsls_player
+      shift_delta: 0.05
+    - type: random_player
+    - type: noise_nash_player
+      noise_sigma: 0.05
