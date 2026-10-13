@@ -181,6 +181,17 @@
         <div class="quadro"><img src="./figures/fig_cross_deploy_ci_comparison.png" alt="Within-pair versus cross-pair collusion index per matching" loading="lazy" /></div>
         <figcaption><b><span class="en">Figure 7 of the paper.</span><span class="pt">Figura 7 do artigo.</span></b> <span class="en">Within-pair versus cross-pair collusion index, per matching.</span><span class="pt">Índice de colusão dentro do par versus entre pares, por pareamento.</span></figcaption>
       </figure>
+      <div class="linha">
+        <div>
+          <p class="en">At scale the picture is the same. Training 1,024 pairs under the same protocol on Calvano's grid and measuring the long-run price averaged over all 225 starting states, the collusion index is 0.669 within pairs and 0.134 across 2,000 random matchings of frozen policies. The two heatmaps below show where the same policies end up: with their training partner, on a ridge along the diagonal between 1.70 and 1.90; with a stranger, in the competitive corner, off the diagonal. And matchings between pairs that had converged to the same price collapse just as far: what fails to transfer is not the price, but the off-path structure that would return to it.</p>
+          <p class="pt">Em escala, o quadro é o mesmo. Treinando 1.024 pares sob o mesmo protocolo na grade de Calvano e medindo o preço de longo prazo médio sobre os 225 estados iniciais, o índice de colusão é 0,669 dentro dos pares e 0,134 em 2.000 pareamentos aleatórios de políticas congeladas. Os dois heatmaps abaixo mostram onde as mesmas políticas vão parar: com o parceiro de treino, numa crista ao longo da diagonal entre 1,70 e 1,90; com um estranho, no canto competitivo, fora da diagonal. E pareamentos entre pares que tinham convergido para o mesmo preço colapsam igual: o que não se transfere não é o preço, e sim a estrutura fora do caminho que levaria de volta a ele.</p>
+        </div>
+        <aside class="nota"><span class="num">0.669 → 0.134</span><span class="en">1,024 pairs, 2,000 matchings, basin-weighted long-run price. Matchings between pairs with the identical attractor: 0.138.</span><span class="pt">1.024 pares, 2.000 pareamentos, preço de longo prazo ponderado pela bacia. Pareamentos entre pares com atrator idêntico: 0,138.</span><span class="fig"><code>attractor_cross_prediction.py</code></span></aside>
+      </div>
+      <figure class="painel">
+        <div class="quadro"><img src="./figures/fig_attractor_heatmap_cross.png" alt="Two heatmaps over the 15 by 15 price grid: within-pair attractor mass along the diagonal between 1.70 and 1.90; cross-pair mass in the competitive corner" loading="lazy" /></div>
+        <figcaption><b><span class="en">Where frozen policies end up.</span><span class="pt">Onde as políticas congeladas vão parar.</span></b> <span class="en">Left: 1,024 co-trained pairs with their training partner. Right: 2,000 random matchings of the same policies with a stranger. Same colour scale; dashed lines mark the competitive and monopoly prices.</span><span class="pt">Esquerda: 1.024 pares com o parceiro de treino. Direita: 2.000 pareamentos aleatórios das mesmas políticas com um estranho. Mesma escala de cor; as linhas tracejadas marcam os preços competitivo e de monopólio.</span></figcaption>
+      </figure>
     </section>
 
     <!-- 4 ---------------------------------------------------------------- -->
@@ -364,6 +375,7 @@
           <tr><td><span class="en">Cross-pairing (Fig. 7)</span><span class="pt">Pares cruzados (Fig. 7)</span></td><td><code>analysis/scripts/plot_cross_deploy_analysis.py</code></td><td><code>results/cross_deploy__…/eval/</code></td></tr>
           <tr><td><span class="en">Best-response gain (Fig. 8)</span><span class="pt">Ganho da melhor resposta (Fig. 8)</span></td><td><code>analysis/scripts/interpretable_ce_gap.py</code></td><td><span class="en">Q-tables + reference run</span><span class="pt">Q-tables + run de referência</span></td></tr>
           <tr><td><span class="en">Grid granularity (Fig. 9)</span><span class="pt">Granularidade da grade (Fig. 9)</span></td><td><code>analysis/scripts/plot_grid_sensitivity.py</code></td><td><code>results/grid_sensitivity__20260807_144718/</code></td></tr>
+          <tr><td><span class="en">Cross-pairing at scale (1,024 pairs)</span><span class="pt">Pares cruzados em escala (1.024 pares)</span></td><td><code>analysis/scripts/attractor_cross_prediction.py</code></td><td><code>experiments/attractor_pilot.py</code> <span class="en">(~12 min to regenerate)</span><span class="pt">(~12 min para regenerar)</span></td></tr>
           <tr><td><span class="en">The live map above</span><span class="pt">O mapa ao vivo acima</span></td><td><code>analysis/scripts/export_policy_json.py</code></td><td><code>results/cross_deploy__…/training/pair_001_A/</code></td></tr>
         </tbody>
       </table>

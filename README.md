@@ -63,6 +63,7 @@ without retraining. Run the scripts from the repository root.
 | §4.5 | one-period deviation is unprofitable (18/18) | `analysis/scripts/deviator_net_profit.py` | `results/impulse_response__20260807/` |
 | §4.5, Fig. 8 | exact best-response gain (14.8%) | `analysis/scripts/interpretable_ce_gap.py` | Q-tables + `results/calvano_careful__42__20260624_213325/` |
 | §4.6, Fig. 9 | grid-granularity sweep | `analysis/scripts/plot_grid_sensitivity.py` | `results/grid_sensitivity__20260807_144718/` |
+| §4.4 | cross-pairing at scale: 1,024 pairs, CI 0.669 within vs 0.134 across | `analysis/scripts/attractor_distribution.py`, `attractor_cross_prediction.py` | `results/attractor_pilot__*/` (regenerate below, ~12 min on 24 CPU cores); derived data in `analysis/data/attractor_*` |
 
 Figures 1 and 2 are diagrams and have no script.
 
@@ -76,6 +77,7 @@ python experiments/impulse_response.py --pairs_dir results/cross_deploy__<timest
 python experiments/strategy_test.py --sweep_dir results/cross_deploy__<timestamp>/training
 python experiments/sweep_grid_sensitivity_vectorized.py --levels 5,15,50,100,200
 python experiments/sweep_calvano_replication.py --n_seeds 50
+python experiments/attractor_pilot.py --n_pairs 1024 --k 128      # the 1,024-pair check (seeds fixed)
 ```
 
 Each runner prints its usage with `-h`. Seeds are fixed in the configuration files and

@@ -356,9 +356,10 @@ for by a separate five-pair population trained under the faithful regime
 (no resets, single horizon, stability stopping rule), on which Section 5
 reruns the entire audit chain. In total the paper draws on 24 co-trained
 pairs at 2M steps, one 10M-step reference pair, five pairs under the
-faithful regime, and 20 seeds per grid size in the granularity sweep of
-Section 4.6; every audit is computed exactly on the converged policies,
-pair by pair, rather than averaged over sessions.
+faithful regime, 20 seeds per grid size in the granularity sweep of
+Section 4.6, and 1,024 pairs on Calvano's grid for the cross-pairing
+check at scale in Section 4.4; every audit is computed exactly on the
+converged policies, pair by pair, rather than averaged over sessions.
 
 \textbf{Reproducibility.} The environment, agents, training and audit
 scripts, configurations, seeds and the converged Q-tables behind every
@@ -585,16 +586,22 @@ but in different runs, when cross-matched and evaluated greedily,
 collapse from within-pair \textbf{CI = 0.674 to CI = 0.126}, an 81\%
 loss (12 cross-matchings, all unique after the seed audit); in an
 extended combinatorial evaluation (40 matchings), mean CI is 0.109 and
-\textbf{30\% of matchings price below Nash} (Figure 7). The cross-paired
-impulse response makes the point visually: there is no plateau to
-defend, prices hover noisily around p\^{}NE, and the forced deviation is
-invisible against the ambient variation (Figure 3, right column). In
-machine-learning terms, this is an out-of-distribution failure: each
-policy was fit to the distribution of states its particular partner
-generates, and a new partner, even one trained under an identical
-protocol, moves the test distribution. The pair has overfit to itself.
-Collusion in this environment is not a strategy an agent \emph{has}; it
-is a convention a pair \emph{keeps}.
+\textbf{30\% of matchings price below Nash} (Figure 7). At scale the
+collapse is the same: 1,024 pairs trained under the same protocol on
+Calvano's grid give, with the long-run price averaged over all 225
+initial states, CI = 0.669 within pairs and 0.134 across 2,000 random
+matchings, a loss of 80\%; and matchings between pairs that had
+converged to the \emph{same} price collapse just as far (0.138), so what
+fails to transfer is not the price level but the off-path structure that
+would return to it. The cross-paired impulse response makes the point
+visually: there is no plateau to defend, prices hover noisily around
+p\^{}NE, and the forced deviation is invisible against the ambient
+variation (Figure 3, right column). In machine-learning terms, this is
+an out-of-distribution failure: each policy was fit to the distribution
+of states its particular partner generates, and a new partner, even one
+trained under an identical protocol, moves the test distribution. The
+pair has overfit to itself. Collusion in this environment is not a
+strategy an agent \emph{has}; it is a convention a pair \emph{keeps}.
 
 \begin{figure}
 \centering
