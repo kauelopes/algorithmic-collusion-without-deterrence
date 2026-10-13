@@ -18,6 +18,12 @@ Everything the figures and tables rest on is in this repository: the environment
 agents, the experiment runners, the converged Q-tables, the analysis scripts and the
 camera-ready source of the paper.
 
+**Companion site:** https://kauelopes.github.io/algorithmic-collusion-without-deterrence/
+(English and Portuguese). It walks through the five audits with the paper's figures,
+and section 5 has a live map of the 225 joint price states: click a cell and watch a
+converged pair return to its attractor, or switch to the mean field of the 1,024 pairs
+trained at scale.
+
 ## Layout
 
 ```
@@ -32,6 +38,7 @@ results/             converged Q-tables (agents/*.npz) and run summaries used by
 figures/             the figures as they appear in the paper
 paper/               camera-ready LaTeX source (ACM sigconf), bibliography and PDF
 tests/               unit tests for the environment, the agent and the trainer
+docs/                the companion site (static HTML, served by GitHub Pages)
 ```
 
 ## Setup
