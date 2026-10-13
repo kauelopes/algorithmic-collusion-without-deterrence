@@ -379,24 +379,6 @@
         </div>
         <aside class="nota"><span class="en">Repository: <a href="https://github.com/kauelopes/algorithmic-collusion-without-deterrence">github.com/kauelopes/algorithmic-collusion-without-deterrence</a>. MIT license for code and data; 318 tests.</span><span class="pt">Repositório: <a href="https://github.com/kauelopes/algorithmic-collusion-without-deterrence">github.com/kauelopes/algorithmic-collusion-without-deterrence</a>. Licença MIT para código e dados; 318 testes.</span></aside>
       </div>
-      <div class="rolagem">
-      <table>
-        <thead><tr><th><span class="en">Result</span><span class="pt">Resultado</span></th><th>Script</th><th><span class="en">Input</span><span class="pt">Entrada</span></th></tr></thead>
-        <tbody>
-          <tr><td><span class="en">Impulse responses (Fig. 3)</span><span class="pt">Respostas ao impulso (Fig. 3)</span></td><td><code>analysis/scripts/plot_impulse_ce_gap.py</code></td><td><code>results/impulse_response__20260807/</code></td></tr>
-          <tr><td><span class="en">Cooperative punisher (Fig. 4)</span><span class="pt">Punidor cooperativo (Fig. 4)</span></td><td><code>analysis/scripts/overlay_cooperative_init.py</code></td><td><code>results/cross_deploy__…/training/*/agents/</code></td></tr>
-          <tr><td><span class="en">Random-policy null (Fig. 5)</span><span class="pt">Nulo de políticas aleatórias (Fig. 5)</span></td><td><code>analysis/scripts/null_model_impulse_response.py</code></td><td><span class="en">same Q-tables</span><span class="pt">as mesmas Q-tables</span></td></tr>
-          <tr><td><span class="en">Capacity control (Fig. 6)</span><span class="pt">Controle de capacidade (Fig. 6)</span></td><td><code>analysis/scripts/punishment_representational_capacity.py</code></td><td><span class="en">none (constructive)</span><span class="pt">nenhuma (construtivo)</span></td></tr>
-          <tr><td><span class="en">Cross-pairing (Fig. 7)</span><span class="pt">Pares cruzados (Fig. 7)</span></td><td><code>analysis/scripts/plot_cross_deploy_analysis.py</code></td><td><code>results/cross_deploy__…/eval/</code></td></tr>
-          <tr><td><span class="en">Best-response gain (Fig. 8)</span><span class="pt">Ganho da melhor resposta (Fig. 8)</span></td><td><code>analysis/scripts/interpretable_ce_gap.py</code></td><td><span class="en">Q-tables + reference run</span><span class="pt">Q-tables + run de referência</span></td></tr>
-          <tr><td><span class="en">Grid granularity (Fig. 9)</span><span class="pt">Granularidade da grade (Fig. 9)</span></td><td><code>analysis/scripts/plot_grid_sensitivity.py</code></td><td><code>results/grid_sensitivity__20260807_144718/</code></td></tr>
-          <tr><td><span class="en">Cross-pairing at scale (1,024 pairs)</span><span class="pt">Pares cruzados em escala (1.024 pares)</span></td><td><code>analysis/scripts/attractor_cross_prediction.py</code></td><td><code>experiments/attractor_pilot.py</code> <span class="en">(~12 min to regenerate)</span><span class="pt">(~12 min para regenerar)</span></td></tr>
-          <tr><td><span class="en">The audits at scale (1,024 pairs)</span><span class="pt">As auditorias em escala (1.024 pares)</span></td><td><code>analysis/scripts/audits_at_scale.py</code></td><td><span class="en">the same run as the row above</span><span class="pt">o mesmo run da linha acima</span></td></tr>
-          <tr><td><span class="en">The live map above</span><span class="pt">O mapa ao vivo acima</span></td><td><code>analysis/scripts/export_policy_json.py</code></td><td><code>results/cross_deploy__…/training/pair_001_A/</code></td></tr>
-          <tr><td><span class="en">The mean field above (1,024 pairs)</span><span class="pt">O campo médio acima (1.024 pares)</span></td><td><code>analysis/scripts/export_population_json.py</code></td><td><span class="en">the same run as the audits at scale</span><span class="pt">o mesmo run das auditorias em escala</span></td></tr>
-        </tbody>
-      </table>
-      </div>
 <pre>python -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install -r requirements.txt
 python -m pytest -q tests</pre>
